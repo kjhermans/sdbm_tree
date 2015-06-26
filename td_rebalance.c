@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -27,6 +28,7 @@ unsigned td_log2
 
 /**
  * \ingroup btree_private
+ *
  * Rebalances the tree a little bit:
  * For every imbalance, the top is shifted one in the right direction,
  * even when the imbalance is bigger.

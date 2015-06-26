@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -57,6 +58,8 @@ int td_debug_value
 }
 
 /**
+ * \ingroup btree_private
+ *
  * Debugs the contents and children of a btree node to stderr.
  *
  * \param td Non-NULL pointer to an initialized btree structure.

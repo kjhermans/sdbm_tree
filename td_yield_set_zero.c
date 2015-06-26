@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,7 +12,13 @@ extern "C" {
 
 /**
  * \ingroup btree_private
+ *
  * Set administrated empty space to zero.
+ *
+ * \param td Non-NULL pointer to initialized td_t structure.
+ * \param off Offset to the chunk to be zeroised.
+ *
+ * \returns Zero on success, or non-zero on failure.
  */
 int td_yield_set_zero
   (td_t* td, unsigned off)

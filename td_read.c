@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,12 +12,15 @@ extern "C" {
 
 /** 
  * \ingroup btree_private 
+ *
  * Reads a piece of the btree's resource.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param[in] off Offset of the piece to be read within the btree's resource.
  * \param[out] buf The memory buffer to be filled.
  * \param[in] size The size of the piece to be read and copied into the
  * mempory buffer.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */ 
 int td_read

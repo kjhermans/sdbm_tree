@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,12 +12,15 @@ extern "C" {
 
 /**
  * \ingroup btree_private
+ *
  * Recursive function.
  * Iterates to the point in the dbm at or nearest to before the sought key.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param path Search path built up to this point.
  * \param key Non-NULL pointer to a potentially uninitialized tdt.
  * \param partial Boolean. Whether or not matches are allowed to be partial.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_iterate_to_key

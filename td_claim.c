@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -138,7 +139,9 @@ int td_claim_(
 
 /**
  * \ingroup btree_private
- * Claims an amount of resources.  While iterating through the linked list
+ *
+ * Claims an amount of resources.
+ * While iterating through the linked list
  * of empty chunks, fills up a little table denoting the fittingness of
  * this chunk to be used.  Perfect fits are used immediately, while
  * not-so-perfect fits fill up the fitness table.  In the end, when either

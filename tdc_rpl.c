@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -39,6 +40,7 @@ int tdc_rpl_locked
 
 /**
  * \ingroup btree
+ *
  * Replaces the value of the element currently at the cursor.
  *
  * \param tdc Non-NULL pointer to an initialized cursor structure.

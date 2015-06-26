@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -67,6 +68,7 @@ extern "C" {
  * \param[in] parent Key header of the parent node.
  * \param[in] ptr Offset of the key node itself.
  * \param[in] node Key node itself.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_rotate_left
@@ -80,14 +82,11 @@ int td_rotate_left
 {
   unsigned rightptr;
   struct keyhead rightnode;
+
   if ((rightptr = node->next) == 0) {
     RETURNERR(TDERR_BOUNDS);
   }
   CHECK(td_read_keyhead(td, rightptr, &rightnode));
-
-//fprintf(stderr, "ROTATE LEFT @%u\n", ptr);
-//td_debug_node(td, (parentptr ? parentptr : td->header.top), 0);
-
   node->next = rightnode.previous;
   rightnode.previous = ptr;
   if (parentptr) {
@@ -105,11 +104,6 @@ int td_rotate_left
   }
   CHECK(td_write_keyhead(td, rightptr, &rightnode));
   CHECK(td_write_keyhead(td, ptr, node));
-
-//fprintf(stderr, "AFTER ROTATION\n");
-//td_debug_node(td, (parentptr ? parentptr : td->header.top), 0);
-//fprintf(stderr, "ROTATE LEFT DONE.\n\n");
-
   return 0;
 }
 

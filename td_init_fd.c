@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -12,11 +13,6 @@ extern "C" {
 #include <unistd.h>
 
 #include "td_private.h"
-
-/*
-extern void* realloc(void* ptr, unsigned size);
-extern void  free(void* ptr);
-*/
 
 static
 int td_fd_lock
@@ -111,10 +107,13 @@ void* td_fd_realloc
 
 /**
  * \ingroup btree
+ *
  * Initializes a btree to use a random-access file-descriptor as its resource.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param flags Bits from the TDFLG_* values.
  * \param fd A read/write random-access open filedescriptor.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_init_fd

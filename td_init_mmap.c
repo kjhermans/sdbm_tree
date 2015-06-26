@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -39,12 +40,15 @@ void td_mmap_close
 
 /**
  * \ingroup btree
+ *
  * Initializes a btree to use a memory-mapped file as a resource.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param flags Bits from the TDFLG_* values.
  * \param fd Filedescriptor to be memory mapped
  * \param off
  * \param siz
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_init_mmap

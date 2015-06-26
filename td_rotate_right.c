@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,12 +12,15 @@ extern "C" {
 
 /**
  * \ingroup btree_private
+ *
  * See documentation for td_rotate_left().
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param[in] parentptr Offset of the parent key node.
  * \param[in] parent Key header of the parent node.
  * \param[in] ptr Offset of the key node itself.
  * \param[in] node Key node itself.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_rotate_right

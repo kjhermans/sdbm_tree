@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -23,6 +24,7 @@ void td_open_close
 
 /** 
  * \ingroup btree
+ *
  * Opens a btree as a file resource, according to POSIX open(2).
  *
  * \param td Non-NULL pointer to an initialized btree structure.
@@ -30,6 +32,7 @@ void td_open_close
  * \param tdflags Bits from the TDFLG_* values.
  * \param openflags Corresponds to the open(2) call flags parameter.
  * \param mode Corresponds to the open(2) call mode parameter.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */ 
 int td_open

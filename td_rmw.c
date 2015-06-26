@@ -1,7 +1,8 @@
 /*
- * Copyright 2015 K.J. Hermans (kees@pink-frog.com)
- * This code is part of simpledbm, an API to a dbm on a finite resource.
- */
+** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
+** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
+*/
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,7 +14,7 @@ static
 int td_rmw_locked
   (
     td_t* td,
-    tdt_t* key,
+    const tdt_t* key,
     tdt_t* value,
     unsigned flags,
     rmwfnc_t callback,
@@ -32,15 +33,22 @@ int td_rmw_locked
     if (value) {
       CHECK(td_read_value(td, path.head->keyhead.value, value, flags));
       if (callback) {
-        CHECK(callback(td, key, value, arg));
-        CHECK(
-          td_put_replace(
-            td,
-            path.head->keyhead.value,
-            path.head->ptr,
-            &(path.head->keyhead)
-          )
-        );
+        int r;
+        switch (r = callback(td, key, value, arg)) {
+        case 0:
+          CHECK(
+            td_put_replace(
+              td,
+              path.head->keyhead.value,
+              path.head->ptr,
+              &(path.head->keyhead)
+            )
+          );
+        case TDERR_NOTFOUND:
+          return 0;
+        default:
+          return r;
+        }
       }
     }
     return 0;
@@ -61,11 +69,25 @@ int td_rmw_locked
  * Inside the * callback, the caller implements changes to the value tdt
  * and returns zero. The renewed value is then stored and the lock
  * is cleared.
+ *
+ * \param td Non-NULL pointer to initialized td_t structure.
+ * \param key Non-NULL pointer to initialized tdt_t structure.
+ * \param value Non-NULL pointer to initialized tdt_t structure.
+ * \param flags Bits from TDFLG_* values.
+ * \param callback The callback that examines the value, potentially
+ * changes it, and returns zero to have it stored. Should any such function
+ * return TDERR_NOTFOUND, then the value is considered unchanged, and
+ * zero is returned by the td_rmw() function. Any other error is passed
+ * along to the caller of td_rmw().
+ * \param arg Any pointer, also NULL, that the caller wants passed to
+ * the callback.
+ *
+ * \returns Zero on success, or non-zero on error.
  */
 int td_rmw
   (
     td_t* td,
-    tdt_t* key,
+    const tdt_t* key,
     tdt_t* value,
     unsigned flags,
     rmwfnc_t callback,

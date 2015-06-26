@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,17 +12,20 @@ extern "C" {
 
 /**
  * \ingroup btree_private
- * Recursive function.
+ *
  * Rebalances a node by shifting weight away from the heavier child.
+ * Recursive function.
  * First determines weight by accessing the children, then shift them
  * if the children are out of balance and it can be fixed (i.e. the
  * difference in weight between them is bigger than one).
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param[in] parentptr Offset of the parent key node.
  * \param[in] parentnode Key header of the parent node.
  * \param[in] ptr Offset of the key node itself.
  * \param[out] weight Filled with the added weight of the children + 1
  * on return.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_rebalance_node

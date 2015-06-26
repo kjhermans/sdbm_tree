@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -53,9 +54,12 @@ void* td_malloc_realloc
 
 /**
  * \ingroup btree
+ *
  * Initializes a btree to use a malloc'ed piece of memory as resource.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param flags Bits from the TDFLG_* values.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_init_malloc

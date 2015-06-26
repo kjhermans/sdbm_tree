@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -93,8 +94,9 @@ int td_merge_empties
 
 /**
  * \ingroup btree_private
- * Defragments our space, both alignment of empty chunks and fragmented
- * values. This function is called
+ *
+ * Defragments the resource, both alignment of empty chunks and fragmented
+ * values. This function is called on deletion of nodes.
  *
  * \param td Non-NULL pointer to an initialized btree structure.
  *

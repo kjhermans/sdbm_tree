@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -26,10 +27,13 @@ int tdc_init_locked
 
 /**
  * \ingroup btree
+ *
  * Initializes a cursor, moving it to the beginning of the tree.
+ *
  * \param[in] td Non-NULL pointer to an initialized btree structure.
  * \param[out] tdc Non-NULL pointer to a potentially uninitialized cursor
  * structure.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int tdc_init

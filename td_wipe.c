@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -39,8 +40,13 @@ int td_wipe_locked
 
 /**
  * \ingroup btree
+ *
  * Wipes all data from a btree by creating one big single empty chunk
  * from all available space beyond the header.
+ *
+ * \param td Non-NULL pointer to initialized td_t structure.
+ *
+ * \returns Zero on success, or non-zero on error.
  */
 int td_wipe
   (td_t* td)

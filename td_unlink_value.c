@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -14,10 +15,10 @@ extern "C" {
  *
  * ---- Description ----
  *
- * \param td
- * \param valueptr
+ * \param td Non-NULL pointer to initialized td_t structure.
+ * \param valueptr Pointer to the value node.
  *
- * \returns
+ * \returns Zero on success, or non-zero on error.
  */
 int td_unlink_value
   (td_t* td, unsigned valueptr)

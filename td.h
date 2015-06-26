@@ -168,12 +168,12 @@ int td_del(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
  */
 int td_pop(td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
 
-typedef int(*rmwfnc_t)(td_t*,tdt_t* key, tdt_t* value, void* arg);
+typedef int(*rmwfnc_t)(td_t*,const tdt_t* key, tdt_t* value, void* arg);
 
 int td_rmw
   (
     td_t* td,
-    tdt_t* key,
+    const tdt_t* key,
     tdt_t* value,
     unsigned flags,
     rmwfnc_t callback,

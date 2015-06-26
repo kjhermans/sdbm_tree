@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,12 +12,15 @@ extern "C" {
 
 /**
  * \ingroup btree_private
+ *
  * Compares a path (stack-) element to a given key.
  * Leaves the result of the comparison in the element itself.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param elt Element containing a pointer to the current key in the path.
  * \param key Non-NULL pointer to a potentially uninitialized tdt.
  * \param partial Boolean. Whether or not matches are allowed to be partial.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_iterate_compare

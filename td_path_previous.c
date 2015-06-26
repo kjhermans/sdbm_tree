@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -14,6 +15,11 @@ extern "C" {
  *
  * Moves a path structure (used in normal searches and cursors)
  * to the previous node.
+ *
+ * \param td Non-NULL pointer to initialized td_t structure.
+ * \param path Non-NULL pointer to initialized struct path.
+ *
+ * \returns Zero on success, or non-zero on error.
  */
 int td_path_previous
   (td_t* td, struct path* path)

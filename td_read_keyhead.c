@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -11,10 +12,13 @@ extern "C" {
 
 /**
  * \ingroup btree_private
+ *
  * Reads a key header.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param[in] off Offset of the key header to be read.
  * \param[out] keyhead On successful return, contains the key header.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_read_keyhead

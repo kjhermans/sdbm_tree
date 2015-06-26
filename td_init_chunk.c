@@ -1,6 +1,7 @@
 /*
 ** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
+** License: BSD
 */
 
 #ifdef __cplusplus
@@ -12,11 +13,6 @@ extern "C" {
 #include <unistd.h>
 
 #include "td_private.h"
-
-/*
-extern void* realloc(void* ptr, unsigned size);
-extern void  free(void* ptr);
-*/
 
 static
 int td_chunk_lock
@@ -63,12 +59,15 @@ void* td_chunk_realloc
 
 /**
  * \ingroup btree
+ *
  * Initializes a btree to use a part of a random-access file.
+ *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param flags Bits from the TDCFLG_* values.
  * \param fd Read/write, random-access, open file descriptor.
  * \param off Offset within the file pointed to by fd.
  * \param size Size to use within the file pointed to by fd.
+ *
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_init_chunk
