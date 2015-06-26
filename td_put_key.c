@@ -17,12 +17,12 @@ extern "C" {
  * 
  * ---- Description ----
  *
- * \param td
- * \param key
- * \param value
- * \param flags
+ * \param td Non-NULL pointer to an initialized btree structure.
+ * \param key Non-NULL pointer to an initialized tdt_t structure.
+ * \param valueptr Offset to the value node already written
+ * \param flags Bits from the TDFLG_* values.
  *
- * \returns
+ * \returns Zero on success, or non-zero on error.
  */
 int td_put_key
   (td_t* td, const tdt_t* key, const unsigned valueptr, unsigned flags)

@@ -17,13 +17,13 @@ extern "C" {
  *
  * ---- Description ----
  *
- * \param td
- * \param key
- * \param value
- * \param keyptr
- * \param previous
- * \param next
- * \param flags
+ * \param td Non-NULL pointer to an initialized btree structre.
+ * \param key Non-NULL pointer to an initialized tdt_t structure.
+ * \param valueptr Offset to the written value node.
+ * \param keyptr On successful return, the offset of the written key node.
+ * \param previous Offset to the previous node.
+ * \param next Offset to the next node.
+ * \param flags Bits from the TDFLG_* values.
  *
  * \returns Zero on success, or any error of the underlying functions.
  */

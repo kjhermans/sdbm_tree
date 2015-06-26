@@ -1,0 +1,11 @@
+This repository is part of a broader library of implementations of
+database structures on potentially limited resources, including (b)tree,
+hashtable, queue, skiplist, etc. All libraries have unified types,
+similar calling conventions, flags and error codes.
+
+This repository implements a simple binary tree, that self-balances and
+defragments as you go along and should therefore have insertion-, deletion-
+and search-times of 2log(n) on your dataset. Callbacks can be provided
+to the API that may implement your own storage- and comparison-functions.
+Partial comparison is provided, as are cursors, giving you you functionality
+comparable to Sleepycat-1.85.

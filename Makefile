@@ -16,9 +16,14 @@ td_functions.h: *.c
 $(TARGET): $(OBJECTS)
 	@echo "Creating library .. Ok"; ar -rcs $(TARGET) $(OBJECTS)
 
+doc:
+	@echo "  [DOC]"
+	@doxygen
+
 clean:
 	@rm -f $(TARGET) $(OBJECTS) td_put td_dump td_debug
 	@cd t && make clean
+	@cd d && rm -rf html/
 
 test:
 	@cd t && make

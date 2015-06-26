@@ -18,11 +18,9 @@ extern "C" {
  * This function is private, and assumes that the database is locked.
  *
  * \param td Non-NULL pointer to an initialized btree structure.
- * \param value Non-NULL pointer to a potentially uninitialized tdt.
+ * \param valueptr Offset to the already written value node.
  * \param keyptr Offset to the key node.
  * \param keyhead Key header structure loaded at keyptr.
- * \param flags Bits from TDFLG_* values, passed from a call to td_put()
- * or tdc_rpl().
  *
  * \returns Zero on success, or a TDERR_* value on error.
  */ 
