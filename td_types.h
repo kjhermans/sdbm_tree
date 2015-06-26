@@ -1,6 +1,7 @@
 /*
-** Copyright 2008 K.J. Hermans (kees@pink-frog.com)
-** This code is part of skipdisk, an API to a skiplist on a finite resource.
+** Copyright 2015 K.J. Hermans (kees@pink-frog.com)
+** This code is part of simpledbm, an API to a btree on a finite resource.
+** License: BSD
 */
 
 #ifndef _TD_TYPES_H_
