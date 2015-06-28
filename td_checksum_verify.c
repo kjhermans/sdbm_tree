@@ -26,12 +26,8 @@ extern "C" {
 int td_checksum_verify
   (void* mem, unsigned length, unsigned checksum)
 {
-  uchar* _mem = (uchar*)mem;
-  unsigned i;
-  unsigned control = 0;
-  for (i=0; i < length; i++) {
-    control += ( _mem[ i ] * ((i * 2) + 1));
-  }
+  unsigned control;
+  td_checksum_create(mem, length, &control);
   if (checksum == control) {
     return 0;
   } else {

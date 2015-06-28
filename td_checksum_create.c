@@ -10,10 +10,25 @@ extern "C" {
 
 #include "td_private.h"
 
+#define FNV_OFFSET_BASIS 0xcbf29ce484222325
+#define FNV_PRIME 0x100000001b3
+
 /**
  * \ingroup btree_private
  *
  * Creates a checksum of a piece of memory.
+ * Does this using the FNV-1a algorithm, which is 64-bit, and
+ * must be reduced to sizeof(unsigned). So it is a variety of FNV.
+ *
+ * \code
+
+   hash = FNV_offset_basis
+   for each byte_of_data to be hashed
+        hash = hash XOR byte_of_data
+        hash = hash × FNV_prime
+   return hash
+
+ * \endcode
  *
  * \param[in] mem Non-NULL pointer to the beginning of the memory
  * to be checksummed.
@@ -25,10 +40,13 @@ void td_checksum_create
 {
   uchar* _mem = (uchar*)mem;
   unsigned i;
-  (*checksum) = 0;
+  u_int64_t workingmem = FNV_OFFSET_BASIS;
+
   for (i=0; i < length; i++) {
-    (*checksum) += ( _mem[ i ] * ((i * 2) + 1));
+    workingmem = workingmem ^ _mem[ i ];
+    workingmem = workingmem * FNV_PRIME;
   }
+  (*checksum) = (unsigned)workingmem;
 }
 
 #ifdef __cplusplus
