@@ -43,7 +43,7 @@ int main
         valuemem[j] = chars[ord];
       }
       tdt_t key = { keymem, keylen }, value = { valuemem, valuelen };
-      fprintf(stderr, "%.8d put\n", i);
+//      fprintf(stderr, "%.8d put\n", i);
       int r = td_put(&td, &key, &value, 0);
       if (r) {
         fprintf(stderr, "Ends with code %d\n", r);
