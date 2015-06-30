@@ -60,7 +60,7 @@ int td_read_keydata
     }
   }
   CHECK(td_read(td, keyoff + headsize, key->data, keysize));
-  if (flags & TDFLG_CHECKSUM) {
+  if (flags & TDFLG_CHECKSUM && keysize == keyhead->size - headsize) {
     CHECK(td_checksum_verify(key->data, keysize, keyhead->checksum));
   }
   return 0;
