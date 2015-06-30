@@ -29,7 +29,7 @@ int tdc_mov_locked
   } else if (flags & TDCFLG_EXACT) {
     tdc->path.size = 0;
     tdc->path.head = 0;
-    RETURNERR(TDERR_NOTFOUND);
+    return TDERR_NOTFOUND;
   } else {
     tdc->path.head->cmp = 0;
     return 0;
