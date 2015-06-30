@@ -145,6 +145,13 @@ int td_get(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
 int td_put(td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
 
 /*
+ * Variant of td_put(). Puts the same value into the btree under
+ * multiple keys. The elipsis is a list tdt_t pointers.
+ */
+int td_put_keys
+  (td_t* td, const tdt_t* value, unsigned flags, unsigned nkeys, ...);
+
+/*
  * Delete a value from the btree by providing a key.
  * \param td Non-NULL pointer to initialized btree structure.
  * \param key Non-NULL pointer to initialized tdt_t.
