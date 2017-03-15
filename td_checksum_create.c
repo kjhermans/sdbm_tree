@@ -10,8 +10,8 @@ extern "C" {
 
 #include "td_private.h"
 
-#define FNV_OFFSET_BASIS 0xcbf29ce484222325
-#define FNV_PRIME 0x100000001b3
+#define FNV_OFFSET_BASIS 0xcbf29ce484222325LL
+#define FNV_PRIME 0x100000001b3LL
 
 /**
  * \ingroup btree_private

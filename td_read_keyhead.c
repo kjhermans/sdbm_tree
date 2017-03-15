@@ -25,7 +25,7 @@ int td_read_keyhead
   (td_t* td, unsigned off, struct keyhead* keyhead)
 {
   if (off < sizeof(struct td_header)) {
-    fprintf(stderr, "libbtree: td_read_keyhead: Attempt read off=%u\n", off);
+    TDLOG("libbtree: td_read_keyhead: Attempt read off=%u\n", off);
     RETURNERR(TDERR_BOUNDS);
   }
   CHECK(
@@ -35,6 +35,15 @@ int td_read_keyhead
       keyhead,
       sizeof(struct keyhead)
     )
+  );
+  TDLOG("%s At %u, value=%u, size=%u, checksum=%u, next=%u, previous=%u\n",
+    __FILE__,
+    off,
+    keyhead->value,
+    keyhead->size,
+    keyhead->checksum,
+    keyhead->next,
+    keyhead->previous
   );
   return 0;
 }

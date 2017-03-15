@@ -68,6 +68,7 @@ int td_verify_keynode
 int td_verify
   (td_t* td, int fix)
 {
+  CHECK(td_read_header(td));
   if (td->header.top) {
     CHECK(td_verify_keynode(td, td->header.top, fix));
   }

@@ -35,6 +35,14 @@ int td_read_chunkhead
       sizeof(struct chunkhead)
     )
   );
+  TDLOG("%s At %u, next=%u, size=%u, checksum=%u, refcount=%u\n",
+    __FILE__,
+    off,
+    chunkhead->next,
+    chunkhead->size,
+    chunkhead->checksum,
+    chunkhead->refcount
+  );
   return 0;
 }
 

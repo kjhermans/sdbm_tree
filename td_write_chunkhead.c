@@ -25,6 +25,14 @@ extern "C" {
 int td_write_chunkhead
   (td_t* td, unsigned off, const struct chunkhead* chunkhead)
 {
+  TDLOG("%s At %u, next=%u, size=%u, checksum=%u, refcount=%u\n",
+    __FILE__,
+    off,
+    chunkhead->next,
+    chunkhead->size,
+    chunkhead->checksum,
+    chunkhead->refcount
+  );
   CHECK(
     td_write(
       td,

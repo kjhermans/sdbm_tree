@@ -145,9 +145,9 @@ int td_get(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
 int td_put(td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
 
 /*
- * Variant of td_put(). Puts the same value into the btree under
- * multiple keys. The elipsis is a list tdt_t pointers.
- */
+* Variant of td_put(). Puts the same value into the btree under
+* multiple keys. The elipsis is a list of tdt_t pointers representing keys.
+*/
 int td_put_keys
   (td_t* td, const tdt_t* value, unsigned flags, unsigned nkeys, ...);
 
@@ -214,6 +214,8 @@ int td_rmw
  * \return Zero on success, or any of the TDERR_* values on error.
  */
 int tdc_init(td_t* td, tdc_t* tdc);
+
+int tdc_first(tdc_t* tdc);
 
 /*
  * Moves an initialized cursor to or near a key.
@@ -312,6 +314,9 @@ int td_wipe
 #define TDERR_STRUCT  -6
 
 #define TDERR_IS_FATAL(__r) ((__r)<0)
+
+extern int td_compare
+  (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
 
 #ifdef __cplusplus
 }

@@ -91,8 +91,20 @@ int td_init2
         CHECK(td_init_create(td, ident, align, flags));
       }
     }
+  } else {
+    td->header = header;
   }
   td->compare = td_compare;
+  TDLOG("%s flags=%u size=%u align=%u top=%u level=%u off_e=%u scn=%u\n",
+    __FILE__,
+    td->header.flags,
+    td->header.size,
+    td->header.align,
+    td->header.top,
+    td->header.level,
+    td->header.off_e,
+    td->header.scn
+  );
   return 0;
 }
 

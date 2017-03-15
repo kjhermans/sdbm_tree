@@ -25,6 +25,12 @@ extern "C" {
 int td_init2(td_t* td, const char* ident, unsigned align, unsigned int flags);
 
 #ifdef _DEBUG
+#define TDLOG(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define TDLOG(...)
+#endif
+
+#ifdef _DEBUG
 #define WARN \
   fprintf(stderr, "Error %d, file=%s, line=%u\n", (__r), __FILE__, __LINE__)
 #endif

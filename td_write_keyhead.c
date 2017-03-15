@@ -24,6 +24,15 @@ extern "C" {
 int td_write_keyhead
   (td_t* td, unsigned off, const struct keyhead* keyhead)
 {
+  TDLOG("%s At %u, value=%u, size=%u, checksum=%u, next=%u, previous=%u\n",
+    __FILE__,
+    off,
+    keyhead->value,
+    keyhead->size,
+    keyhead->checksum,
+    keyhead->next,
+    keyhead->previous
+  );
   CHECK(
     td_write(
       td,

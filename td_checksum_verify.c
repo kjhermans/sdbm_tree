@@ -27,10 +27,12 @@ int td_checksum_verify
   (void* mem, unsigned length, unsigned checksum)
 {
   unsigned control;
+
   td_checksum_create(mem, length, &control);
   if (checksum == control) {
     return 0;
   } else {
+    TDLOG("%s Expected %u, got %u\n", __FILE__, control, checksum);
     RETURNERR(TDERR_CHECKSUM);
   }
 }
