@@ -21,7 +21,7 @@ int main
   unsigned checksum;
 
   srand(time(0));
-  for (i=0; i < 10000; i++) {
+  for (i=0; i < 20000; i++) {
     l = rand() % sizeof(data);
     for (j=0; j < l; j++) {
       data[ j ] = rand() % 256;
