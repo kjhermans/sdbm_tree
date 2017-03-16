@@ -22,16 +22,20 @@ doc:
 
 clean:
 	@rm -f $(TARGET) $(OBJECTS) td_put td_dump td_debug
-	@cd t && make clean
-	@cd d && rm -rf html/
+	@cd dir_t && make clean
+	@cd dir_d && rm -rf html/
 
 test:
-	@cd t && make
+	@cd dir_t && make
+
+unittest:
+	@cd dir_u && make
 
 archive: clean
 	@RELEASE=$$(cat release); \
+	DIR=`basename $$PWD`; \
 	/bin/echo "  [TAR] ~/btree-$$RELEASE.tar.gz"; \
-	cd .. && tar czf ~/btree-$$RELEASE.tar.gz btree/
+	cd .. && tar czf ~/btree-$$RELEASE.tar.gz $$DIR/
 
 cmdline: all td_put td_dump td_debug
 
