@@ -10,9 +10,9 @@ extern "C" {
 
 #ifdef _TD_FD_MAINS_
 
-#include "td.h"
+#include "td_private.h"
 
-#define uchar unsigned char
+//#define uchar unsigned char
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -32,7 +32,7 @@ int td_fd_open
   if (s.st_size == 0) {
     char buf[1024];
     memset(buf, 0, 1024);
-    write(fd, buf, 1024);
+    int w = write(fd, buf, 1024); (void)w;
   }
   return td_init_fd(td, TDFLG_EXTEND|TDFLG_ALLOCTDT, fd);
 }
@@ -243,6 +243,126 @@ int main
 }
 
 #endif // _TD_FD_DEBUG_
+
+#ifdef _TD_FD_AR_
+
+#include "td_private.h"
+
+int main
+  (int argc, char* argv[])
+{
+  td_t td;
+  char* archivefile = 0;
+  char usage[] =
+    "Creates an archive of files\n"
+    "Usage: %s [options] <archivefile> <file> [files]\n"
+    "Options:\n"
+    "-? or -h    Display this text\n"
+  ;
+  int i=1;
+
+  for (; i < argc; i++) {
+    char* arg = argv[i];
+    if (*arg == '-') {
+      ++arg;
+      while (*arg) {
+        switch (*arg) {
+        case '?':
+        case 'h':
+          fprintf(stderr, usage, *argv);
+          return 0;
+        default:
+          fprintf(stderr, "Unknown option -%c\n", *arg);
+          fprintf(stderr, usage, *argv);
+          return ~0;
+        }
+        ++arg;
+      }
+    } else {
+      archivefile = argv[ i ];
+      break;
+    }
+  }
+  if (archivefile == NULL) {
+    fprintf(stderr, "File not set.\n");
+    return ~0;
+  }
+  if (td_open(&td, archivefile, TDFLG_EXTEND, O_RDWR|O_CREAT|O_TRUNC, 0644)) {
+    fprintf(stderr, "Couldn't open '%s'\n", archivefile);
+    return ~0;
+  }
+  for (++i; i < argc; i++) {
+    if (td_ar_scan(argv[ i ], &td)) {
+      fprintf(stderr, "Scanning error.\n");
+      return ~0;
+    }
+  }
+  return 0; //td_debug(&td);
+}
+
+#endif // !_TO_FD_AR_
+
+#ifdef _TD_FD_ARLIST_
+
+int main
+  (int argc, char* argv[])
+{
+  td_t td;
+  char* file = 0;
+  int longform = 0;
+
+  char usage[] =
+    "Lists an archive of files\n"
+    "Usage: %s [options] archivefile\n"
+    "Options:\n"
+    "-l Long form listing\n"
+  ;
+  int i=1;
+
+  for (; i<argc; i++) {
+    char* arg = argv[i];
+    if (*arg == '-') {
+      ++arg;
+      while (*arg) {
+        switch (*arg) {
+        case 'l':
+          longform = 1;
+          break;
+        default:
+          fprintf(stderr, usage, *argv);
+          return ~0;
+        }
+        ++arg;
+      }
+    } else if (file) {
+      fprintf(stderr, "File already set to %s\n", file);
+      fprintf(stderr, usage, *argv);
+      return ~0;
+    } else {
+      file = arg;
+    }
+  }
+  if (file == NULL) {
+    fprintf(stderr, "File not set.\n");
+    return ~0;
+  }
+
+  if (td_open(&td, file, TDFLG_EXTEND, O_RDONLY, 0)) {
+    fprintf(stderr, "Couldn't open '%s'\n", file);
+    return ~0;
+  }
+  if (td_ar_list(&td, longform)) {
+    fprintf(stderr, "Listing error.\n");
+    return ~0;
+  }
+  return 0;
+}
+
+#endif // !_TD_FD_ARLIST_
+
+#ifdef _TD_FD_UNAR_
+
+#endif // !_TD_FD_UNAR_
 
 #endif // _TD_FD_MAINS_
 

@@ -2,7 +2,8 @@ OBJECTS:=$(shell ls *.c | sort | sed -e 's/\.c$$/.o/')
 
 TARGET=libbtree.a
 
-CFLAGS=-g -O2 -Wall -Wextra -D_DEBUG
+CFLAGS=-g -O2 -Wall -Wextra 
+#CFLAGS=-g -O2 -Wall -Wextra -D_DEBUG
 #CFLAGS=-g -O2 -Wall -D_DEBUG -DOLD_TD_ITERATE
 
 all: headers $(TARGET)
@@ -21,7 +22,7 @@ doc:
 	@doxygen
 
 clean:
-	@rm -f $(TARGET) $(OBJECTS) td_put td_dump td_debug
+	@rm -f $(TARGET) $(OBJECTS) td_put td_dump td_debug td_ar td_arlist
 	@cd dir_t && make clean
 	@cd dir_d && rm -rf html/
 
@@ -37,16 +38,27 @@ archive: clean
 	/bin/echo "  [TAR] ~/btree-$$RELEASE.tar.gz"; \
 	cd .. && tar czf ~/btree-$$RELEASE.tar.gz $$DIR/
 
-cmdline: all td_put td_dump td_debug
+cmdline: all td_put td_dump td_debug td_ar td_arlist
 
 td_put: $(TARGET)
-	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_PUT_ mains.c $(TARGET) -o td_put -lm
+	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_PUT_ $(CFLAGS) mains.c $(TARGET) -o td_put -lm
+	strip td_put
 
 td_dump: $(TARGET)
-	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_DUMP_ mains.c $(TARGET) -o td_dump -lm
+	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_DUMP_ $(CFLAGS) mains.c $(TARGET) -o td_dump -lm
+	strip td_dump
 
 td_debug: $(TARGET)
-	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_DEBUG_ mains.c $(TARGET) -o td_debug -lm
+	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_DEBUG_ $(CFLAGS) mains.c $(TARGET) -o td_debug -lm
+	strip td_debug
+
+td_ar: $(TARGET)
+	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_AR_ $(CFLAGS) mains.c $(TARGET) -o td_ar -lm
+	strip td_ar
+
+td_arlist: $(TARGET)
+	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_ARLIST_ $(CFLAGS) mains.c $(TARGET) -o td_arlist -lm
+	strip td_arlist
 
 %.o: %.c
 	@/bin/echo -n "  [CC] $< .. "; \
