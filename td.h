@@ -145,6 +145,13 @@ int td_get(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
 int td_put(td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
 
 /*
+ * Variant of td_put(). Enters a value under a key into the dbm
+ * by reading the value contents to the end of the given filedescriptor.
+ *
+ */
+int td_put_stream(td_t* td, const tdt_t* key, int fd, unsigned flags);
+
+/*
 * Variant of td_put(). Puts the same value into the btree under
 * multiple keys. The elipsis is a list of tdt_t pointers representing keys.
 */
