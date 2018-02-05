@@ -20,3 +20,9 @@ t/test7
 t/test8
 t/test9
 td_functions.h
+
+td_ar
+td_arlist
+td_debug
+td_dump
+td_put
