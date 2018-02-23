@@ -252,6 +252,8 @@ int tdc_prv(tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
  */
 int tdc_get(tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
 
+int tdc_get_stream(tdc_t* tdc, tdt_t* key, int fd, unsigned flags);
+
 /*
  * Replaces the value at the current position of the cursor.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
