@@ -88,7 +88,7 @@ int td_store_value_stream
 
   (*off) = 0;
   while (1) {
-    unsigned char chunk[ 4096 ];
+    unsigned char chunk[ 4096 - sizeof(struct chunkhead) ];
     int r, o = 0;
 
     if ((r = read(fd, chunk, sizeof(chunk))) < 0) {
@@ -101,7 +101,7 @@ int td_store_value_stream
 
     while (o < r) {
       unsigned chunkoff = 0;
-      unsigned needed = r + sizeof(struct chunkhead);
+      unsigned needed = (r - o) + sizeof(struct chunkhead);
       unsigned given = needed;
   
       CHECK(td_claim(td, 0, &chunkoff, &given));
@@ -133,7 +133,7 @@ int td_store_value_stream
       if (r == 0) {
         return 0;
       }
-      o += r;
+      o += (given - sizeof(struct chunkhead));
       lastchunkoff = chunkoff;
     }
   }

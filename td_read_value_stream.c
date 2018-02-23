@@ -19,7 +19,7 @@ int td_read_value_stream_write_chunk
   unsigned off = 0;
   int w;
 
-  while (1) {
+  while (off < chunksize) {
     if ((w = write(fd, chunk + off, chunksize - off)) > 0) {
       off += w;
     } else {
