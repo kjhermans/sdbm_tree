@@ -362,6 +362,60 @@ int main
 
 #ifdef _TD_FD_UNAR_
 
+int main
+  (int argc, char* argv[])
+{
+  td_t td;
+  char* file = 0;
+  int longform = 0;
+
+  char usage[] =
+    "Unpack an archive of files\n"
+    "Usage: %s [options] archivefile\n"
+    "Options:\n"
+    "-l Long form listing\n"
+  ;
+  int i=1;
+
+  for (; i<argc; i++) {
+    char* arg = argv[i];
+    if (*arg == '-') {
+      ++arg;
+      while (*arg) {
+        switch (*arg) {
+        case 'l':
+          longform = 1;
+          break;
+        default:
+          fprintf(stderr, usage, *argv);
+          return ~0;
+        }
+        ++arg;
+      }
+    } else if (file) {
+      fprintf(stderr, "File already set to %s\n", file);
+      fprintf(stderr, usage, *argv);
+      return ~0;
+    } else {
+      file = arg;
+    }
+  }
+  if (file == NULL) {
+    fprintf(stderr, "File not set.\n");
+    return ~0;
+  }
+
+  if (td_open(&td, file, TDFLG_EXTEND, O_RDONLY, 0)) {
+    fprintf(stderr, "Couldn't open '%s'\n", file);
+    return ~0;
+  }
+  if (td_ar_unpack(&td, longform)) {
+    fprintf(stderr, "Unpacking error.\n");
+    return ~0;
+  }
+  return 0;
+}
+
 #endif // !_TD_FD_UNAR_
 
 #endif // _TD_FD_MAINS_

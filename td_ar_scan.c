@@ -32,9 +32,26 @@ int td_ar_create_key
   )
 {
   td_ar_stat_t ars;
-
-  ars.magic = htonl(0x74647200); // spells 'tdr\0'
-  ars.flags = htonl(s->st_mode); // this is not machine/os independent
+  
+  ars.magic = htonl(TDAR_MAGIC);
+  if ((s->st_mode & S_IFMT) == S_IFDIR) {
+    ars.type = htons(TDAR_TYP_DIR);
+  } else if ((s->st_mode & S_IFMT) == S_IFLNK) {
+    ars.type = htons(TDAR_TYP_SYMLINK);
+  } else if ((s->st_mode & S_IFMT) == S_IFREG) {
+    ars.type = htons(TDAR_TYP_FILE);
+  }
+  ars.bits = 0;
+  if ((s->st_mode & S_IRUSR) == S_IRUSR) ars.bits |= TDAR_IRUSR;
+  if ((s->st_mode & S_IWUSR) == S_IWUSR) ars.bits |= TDAR_IWUSR;
+  if ((s->st_mode & S_IXUSR) == S_IXUSR) ars.bits |= TDAR_IXUSR;
+  if ((s->st_mode & S_IRGRP) == S_IRGRP) ars.bits |= TDAR_IRGRP;
+  if ((s->st_mode & S_IWGRP) == S_IWGRP) ars.bits |= TDAR_IWGRP;
+  if ((s->st_mode & S_IXGRP) == S_IXGRP) ars.bits |= TDAR_IXGRP;
+  if ((s->st_mode & S_IROTH) == S_IROTH) ars.bits |= TDAR_IROTH;
+  if ((s->st_mode & S_IWOTH) == S_IWOTH) ars.bits |= TDAR_IWOTH;
+  if ((s->st_mode & S_IXOTH) == S_IXOTH) ars.bits |= TDAR_IXOTH;
+  ars.bits = htons(ars.bits);
   ars.uid = htonl(s->st_uid);
   ars.gid = htonl(s->st_gid);
   ars.size = htobe64(s->st_size);

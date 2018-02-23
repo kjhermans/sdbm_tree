@@ -99,17 +99,20 @@ char* td_ar_datestring
   return ds;
 }
 
-int td_ar_list
+int td_ar_unpack
   (td_t* td, int longform)
 {
   unsigned char keydata[ TD_AR_KEY_MAX ];
-  tdc_t cursor;
   tdt_t key = { keydata, sizeof(keydata) };
+  tdc_t cursor;
+
   tdc_init(td, &cursor);
-  while (tdc_nxt(&cursor, &key, 0, 0) == 0) {
+  while (tdc_get(&cursor, &key, 0, 0) == 0) {
+    char path[ 2048 ];
     td_ar_stat_t s;
     char* filename;
     unsigned filenamesize;
+
     if (key.size < sizeof(s)) {
       fprintf(stderr, "Key size too small.\n");
       return ~0;
@@ -119,8 +122,8 @@ int td_ar_list
       fprintf(stderr, "File is not a td archive.\n");
       return ~0;
     }
-    s.type = htons(s.type);
     s.bits = htons(s.bits);
+    s.type = htons(s.type);
     s.uid = htonl(s.uid);
     s.gid = htonl(s.gid);
     s.size = htobe64(s.size);
@@ -129,18 +132,39 @@ int td_ar_list
     s.atime = htobe64(s.atime);
     filename = (char*)(&(keydata[ sizeof(s) ]));
     filenamesize = key.size - sizeof(s);
+    snprintf(path, sizeof(path), "%-.*s", filenamesize, filename);
     if (longform) {
       fprintf(stdout,
-        "%s %5u %5u %12" PRIu64 " %s %-.*s\n"
+        "%s %5u %5u %12" PRIu64 " %s %s\n"
         , td_ar_modestring(s.type, s.bits)
         , s.uid
         , s.gid
         , s.size
         , td_ar_datestring(s.mtime)
-        , filenamesize, filename
+        , path
       );
     } else {
-      fprintf(stdout, "%-.*s\n", filenamesize, filename);
+      fprintf(stdout, "%s\n", path);
+    }
+    if (s.type == TDAR_TYP_FILE) {
+      int fd;
+      if ((fd = open(path, O_WRONLY|O_CREAT|O_TRUNC, s.bits)) < 0) {
+        fprintf(stderr, "Couldn't open file %s\n", path);
+        return ~0;
+      }
+      if (tdc_get_stream(&cursor, 0, fd, 0)) {
+        close(fd);
+        fprintf(stderr, "Error writing file %s\n", path);
+        return ~0;
+      }
+      close(fd);
+    } else if (s.type == TDAR_TYP_SYMLINK) {
+fprintf(stderr, "SYMLINK\n");
+    } else {
+fprintf(stderr, "WTH %u\n", s.type);
+    }
+    if (tdc_nxt(&cursor, 0, 0, 0)) {
+      break;
     }
     key.size = sizeof(keydata);
   }

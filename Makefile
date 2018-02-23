@@ -38,7 +38,7 @@ archive: clean
 	/bin/echo "  [TAR] ~/btree-$$RELEASE.tar.gz"; \
 	cd .. && tar czf ~/btree-$$RELEASE.tar.gz $$DIR/
 
-cmdline: all td_put td_dump td_debug td_ar td_arlist
+cmdline: all td_put td_dump td_debug td_ar td_arlist td_unar
 
 td_put: $(TARGET)
 	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_PUT_ $(CFLAGS) mains.c $(TARGET) -o td_put -lm
@@ -60,10 +60,13 @@ td_arlist: $(TARGET)
 	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_ARLIST_ $(CFLAGS) mains.c $(TARGET) -o td_arlist -lm
 	strip td_arlist
 
+td_unar: $(TARGET)
+	$(CC) -D_TD_FD_MAINS_ -D_TD_FD_UNAR_ $(CFLAGS) mains.c $(TARGET) -o td_unar -lm
+	strip td_unar
+
 %.o: %.c
-	@/bin/echo -n "  [CC] $< .. "; \
-	if $(CC) $(CFLAGS) -c -o $@ $<; then \
-	  echo "Ok"; \
+	@if $(CC) $(CFLAGS) -c -o $@ $<; then \
+	  echo "[CC] $< .. Ok"; \
 	else \
 	  echo "Failed: $(CC) $(CFLAGS) -c -o $@ $<"; \
 	  exit -1; \

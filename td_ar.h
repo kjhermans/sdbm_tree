@@ -3,10 +3,29 @@
 
 #include <stdint.h>
 
+#define TDAR_IRUSR                      00400
+#define TDAR_IWUSR                      00200
+#define TDAR_IXUSR                      00100
+
+#define TDAR_IRGRP                      00040
+#define TDAR_IWGRP                      00020
+#define TDAR_IXGRP                      00010
+
+#define TDAR_IROTH                      00004
+#define TDAR_IWOTH                      00002
+#define TDAR_IXOTH                      00001
+
+#define TDAR_TYP_FILE                   1
+#define TDAR_TYP_DIR                    2
+#define TDAR_TYP_SYMLINK                3
+
+#define TDAR_MAGIC                      0x74647200 /* spells 'tdr\0' */
+
 typedef struct
 {
   uint32_t magic;
-  uint32_t flags;
+  uint16_t type;
+  uint16_t bits;
   uint32_t uid;
   uint32_t gid;
   uint64_t size;
