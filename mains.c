@@ -409,7 +409,7 @@ int main
     fprintf(stderr, "Couldn't open '%s'\n", file);
     return ~0;
   }
-  if (td_ar_unpack(&td, longform)) {
+  if (td_ar_unpack(&td)) {
     fprintf(stderr, "Unpacking error.\n");
     return ~0;
   }
