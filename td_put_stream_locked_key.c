@@ -19,7 +19,7 @@ extern "C" {
  *
  * \param td
  * \param key
- * \param value
+ * \param fd File descriptor from which the value will be read until EOF.
  * \param flags
  *
  * \returns

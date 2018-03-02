@@ -37,7 +37,7 @@ int td_get_stream_locked
  *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param key Non-NULL pointer to a potentially uninitialized tdt.
- * \param value Potentially NULL pointer to a potentially uninitialized tdt.
+ * \param fd File descriptor to which the value will be written.
  * \param flags Bits from the TDCFLG_* values.
  *
  * \returns Zero on success, or a TDERR_* value on error.

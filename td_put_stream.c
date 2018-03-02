@@ -22,7 +22,7 @@ extern "C" {
  *
  * \param td Pointer to an initialized td_t structure.
  * \param key Pointer to an initialized tdt_t structure, containing the key.
- * \param value Pointer to an initialized tdt_t structure, containing the value.
+ * \param fd File descriptor from which chunks will be read until EOF as value.
  * \param flags May be used to tweak the way the key/value pair is stored.
  *
  * \returns Zero on success, or any of the errors of the underlying

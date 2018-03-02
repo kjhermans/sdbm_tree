@@ -36,7 +36,7 @@ int td_read_value_stream_write_chunk
  *
  * \param td Non-NULL pointer to an initialized btree structure.
  * \param[in] ptr Offset of the first chunk of the value to be read.
- * \param[out] value On successful return, contains the value.
+ * \param[out] fd File descriptor to which the value will be written.
  * \param[in] flags Bits from the TDFLG_* values.
  *
  * \returns Zero on success, or a TDERR_* value on error.

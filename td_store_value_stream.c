@@ -67,7 +67,7 @@ int td_store_valuechunk
  * Stores a new value in empty space(s). Returns its offset.
  *
  * \param td Non-NULL pointer to an initialized btree structure.
- * \param[in] value Value container of data to be stored.
+ * \param[in] fd File descr from which chunks will be read until EOF, as value.
  * \param[in] refcount Reference count for this value node (min. 1).
  * \param[out] off On successful return, contains the offset within
  * the btree's resource, of the first chunk.
