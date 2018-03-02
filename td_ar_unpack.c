@@ -25,6 +25,7 @@ extern "C" {
 #include "td_private.h"
 #include "td_ar.h"
 
+/*
 static
 char md[ 32 ];
 
@@ -98,9 +99,10 @@ char* td_ar_datestring
   }
   return ds;
 }
+*/
 
 int td_ar_unpack
-  (td_t* td, int longform)
+  (td_t* td)
 {
   unsigned char keydata[ TD_AR_KEY_MAX ];
   tdt_t key = { keydata, sizeof(keydata) };
@@ -133,19 +135,7 @@ int td_ar_unpack
     filename = (char*)(&(keydata[ sizeof(s) ]));
     filenamesize = key.size - sizeof(s);
     snprintf(path, sizeof(path), "%-.*s", filenamesize, filename);
-    if (longform) {
-      fprintf(stdout,
-        "%s %5u %5u %12" PRIu64 " %s %s\n"
-        , td_ar_modestring(s.type, s.bits)
-        , s.uid
-        , s.gid
-        , s.size
-        , td_ar_datestring(s.mtime)
-        , path
-      );
-    } else {
-      fprintf(stdout, "%s\n", path);
-    }
+    fprintf(stdout, "%s\n", path);
     if (s.type == TDAR_TYP_FILE) {
       int fd;
       if ((fd = open(path, O_WRONLY|O_CREAT|O_TRUNC, s.bits)) < 0) {
@@ -159,7 +149,16 @@ int td_ar_unpack
       }
       close(fd);
     } else if (s.type == TDAR_TYP_SYMLINK) {
-fprintf(stderr, "SYMLINK\n");
+      char link[ 1024 ];
+      tdt_t value = { link, sizeof(link)-1 };
+      if (tdc_get(&cursor, 0, &value, 0) == 0) {
+        link[ value.size ] = 0;
+        unlink(path);
+        if (symlink(link, path)) {
+          fprintf(stderr, "Error creating symlink %s -> %s\n", path, link);
+          return ~0;
+        }
+      }
     } else {
 fprintf(stderr, "WTH %u\n", s.type);
     }
