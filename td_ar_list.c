@@ -106,10 +106,11 @@ int td_ar_list
   tdc_t cursor;
   tdt_t key = { keydata, sizeof(keydata) };
   tdc_init(td, &cursor);
-  while (tdc_nxt(&cursor, &key, 0, 0) == 0) {
+  while (tdc_get(&cursor, &key, 0, 0) == 0) {
     td_ar_stat_t s;
     char* filename;
     unsigned filenamesize;
+    char linkstring[ 1024 ];
     if (key.size < sizeof(s)) {
       fprintf(stderr, "Key size too small.\n");
       return ~0;
@@ -129,20 +130,33 @@ int td_ar_list
     s.atime = htobe64(s.atime);
     filename = (char*)(&(keydata[ sizeof(s) ]));
     filenamesize = key.size - sizeof(s);
+    if (s.type == TDAR_TYP_SYMLINK) {
+      tdt_t val = { &(linkstring[ 4 ]), sizeof(linkstring)-5 };
+      tdc_get(&cursor, 0, &val, 0);
+      linkstring[ 0 ] = ' ';
+      linkstring[ 1 ] = '-';
+      linkstring[ 2 ] = '>';
+      linkstring[ 3 ] = ' ';
+      linkstring[ val.size + 4 ] = 0;
+    } else {
+      linkstring[ 0 ] = 0;
+    }
     if (longform) {
       fprintf(stdout,
-        "%s %5u %5u %12" PRIu64 " %s %-.*s\n"
+        "%s %5u %5u %12" PRIu64 " %s %-.*s%s\n"
         , td_ar_modestring(s.type, s.bits)
         , s.uid
         , s.gid
         , s.size
         , td_ar_datestring(s.mtime)
         , filenamesize, filename
+        , linkstring
       );
     } else {
       fprintf(stdout, "%-.*s\n", filenamesize, filename);
     }
     key.size = sizeof(keydata);
+    tdc_nxt(&cursor, 0, 0, 0);
   }
   return 0;
 }
