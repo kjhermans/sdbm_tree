@@ -147,21 +147,23 @@ int td_ar_scan
 {
   struct stat s;
 
-  fprintf(stderr, "Scanning %s\n", path);
-  if (stat(path, &s)) {
+  if (lstat(path, &s)) {
     return ~0;
   }
   if ((s.st_mode & S_IFMT) == S_IFDIR) {
+    fprintf(stderr, "Scanning dir %s\n", path);
     if (td_ar_scan_dir(path, &s, td)) {
       fprintf(stderr, "Error processing dir %s\n", path);
       return ~0;
     }
-  } else if ((s.st_mode & S_IFMT) == S_IFLNK) {
+  } else if ((s.st_mode & S_IFLNK) == S_IFLNK) {
+    fprintf(stderr, "Scanning symlink %s\n", path);
     if (td_ar_scan_link(path, &s, td)) {
       fprintf(stderr, "Error processing link %s\n", path);
       return ~0;
     }
   } else if ((s.st_mode & S_IFMT) == S_IFREG) {
+    fprintf(stderr, "Scanning file %s\n", path);
     if (td_ar_scan_file(path, &s, td)) {
       fprintf(stderr, "Error processing file %s\n", path);
       return ~0;
