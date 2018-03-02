@@ -22,7 +22,8 @@ doc:
 	@doxygen
 
 clean:
-	@rm -f $(TARGET) $(OBJECTS) td_put td_dump td_debug td_ar td_arlist
+	@rm -f $(TARGET) $(OBJECTS) td_put td_dump td_debug \
+	  td_ar td_arlist td_unar
 	@cd dir_t && make clean
 	@cd dir_d && rm -rf html/
 
