@@ -11,8 +11,10 @@ all: headers $(TARGET)
 headers: td_functions.h
 
 td_functions.h: *.c
-	@echo "  [GENFUNCTION]"
-	@perl ./gen_td_functions.pl > td_functions.h
+	@if which perl; then \
+	  echo "  [GENFUNCTION]"; \
+	  perl ./gen_td_functions.pl > td_functions.h; \
+	fi
 
 $(TARGET): $(OBJECTS)
 	@echo "Creating library .. Ok"; ar -rcs $(TARGET) $(OBJECTS)
