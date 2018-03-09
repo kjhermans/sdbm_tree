@@ -287,7 +287,13 @@ int main
     fprintf(stderr, "File not set.\n");
     return ~0;
   }
-  if (td_open(&td, archivefile, TDFLG_EXTEND, O_RDWR|O_CREAT|O_TRUNC, 0644)) {
+  if (td_open(
+        &td,
+        archivefile,
+        TDFLG_EXTEND|TDFLG_SPARSE,
+        O_RDWR|O_CREAT|O_TRUNC,
+        0644))
+  {
     fprintf(stderr, "Couldn't open '%s'\n", archivefile);
     return ~0;
   }
