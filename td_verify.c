@@ -21,7 +21,7 @@ int td_verify_valuenode
     CHECK(td_read_chunkhead(td, offset, &chunkhead));
     {
       unsigned chunkdatasize = chunkhead.size - sizeof(chunkhead);
-      uchar buf[ chunkdatasize ];
+      unsigned char buf[ chunkdatasize ];
       CHECK(td_read(td, offset + sizeof(chunkhead), buf, chunkdatasize));
       if (td->header.flags & TDFLG_CHECKSUM) {
         CHECK(td_checksum_verify(buf, chunkdatasize, chunkhead.checksum));
@@ -39,7 +39,7 @@ int td_verify_keynode
   struct keyhead keyhead;
   CHECK(td_read_keyhead(td, offset, &keyhead));
   {
-    uchar buf[ keyhead.size ];
+    unsigned char buf[ keyhead.size ];
     tdt_t key = { buf, sizeof(buf) };
     CHECK(td_read_keydata(td, offset, &keyhead, &key, 0));
   }

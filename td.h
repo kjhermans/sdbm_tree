@@ -74,7 +74,8 @@ extern "C" {
  * \param size Size of the buffer.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int td_init_mem(td_t* td, unsigned flags, void* mem, unsigned size);
+int td_init_mem
+  (td_t* td, unsigned flags, void* mem, unsigned size);
 
 /*
  * Initializes a btree structure using a user-provided file descriptor.
@@ -83,7 +84,8 @@ int td_init_mem(td_t* td, unsigned flags, void* mem, unsigned size);
  * \param fd Valid filedescriptor.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int td_init_fd(td_t* td, unsigned flags, int fd);
+int td_init_fd
+  (td_t* td, unsigned flags, int fd);
 
 /*
  * Initializes a btree structure inside dynamic memory.
@@ -91,16 +93,33 @@ int td_init_fd(td_t* td, unsigned flags, int fd);
  * \param flags Bits from TDFLG_* flags.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int td_init_malloc(td_t* td, unsigned flags);
-int td_init_chunk(td_t* td, unsigned flags, int fd, unsigned off, unsigned siz);
-int td_init_mmap(td_t* td, unsigned flags, int fd, unsigned off, unsigned siz);
-int td_open(td_t*, char*, unsigned tdflags, unsigned openflags, unsigned mode);
+int td_init_malloc
+  (td_t* td, unsigned flags);
+int td_init_chunk
+  (td_t* td, unsigned flags, int fd, unsigned off, unsigned siz);
+int td_init_mmap
+  (td_t* td, unsigned flags, int fd, unsigned off, unsigned siz);
+int td_open
+  (td_t*, char*, unsigned tdflags, unsigned openflags, unsigned mode);
 
 /*
  * Closes the btree, wherever it is stored.
  * \param td Non-NULL pointer to initialized btree structure.
  */
-void td_exit(td_t* td);
+void td_exit
+  (td_t* td);
+
+/*
+ * Associates an administrative database to this db.
+ * This db will be used as a transaction store of any access to the db
+ * (this can be tuned).
+ */
+void td_assoc_admin
+  (td_t* td, td_t* admin, unsigned assocflags);
+
+#define TD_ADMIN_CHANGE                 (1<<0)
+#define TD_ADMIN_ACCESS                 (1<<1)
+#define TD_ADMIN_CONTENT                (1<<2)
 
 /* 
  * Converts a char* string to a key.
@@ -109,7 +128,8 @@ void td_exit(td_t* td);
  * \param string Zero terminated string.
  * \returns A valid tdt.
  */
-tdt_t tdt_string(tdt_t* tdt, char* string);
+tdt_t tdt_string
+  (tdt_t* tdt, char* string);
 
 /*
  * Creates a valid tdt.
@@ -120,7 +140,8 @@ tdt_t tdt_string(tdt_t* tdt, char* string);
  * \param size Size of the memory buffer.
  * \returns A valid tdt.
  */
-tdt_t tdt_init(tdt_t* tdt, void* mem, unsigned size);
+tdt_t tdt_init
+  (tdt_t* tdt, void* mem, unsigned size);
 
 /*
  * Get a value from the btree by providing a key.
@@ -132,7 +153,8 @@ tdt_t tdt_init(tdt_t* tdt, void* mem, unsigned size);
  * \returns Zero on success (key is found), TDERR_NOTFOUND when the key
  * hasn't been found, or any other error.
  */
-int td_get(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
+int td_get
+  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
 
 /*
  * Put a value into the btree by providing a key and a value.
@@ -142,21 +164,31 @@ int td_get(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
  * \param flags Bits from TDFLG_* flags.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int td_put(td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
+int td_put
+  (td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
 
 /*
  * Variant of td_put(). Enters a value under a key into the dbm
  * by reading the value contents to the end of the given filedescriptor.
  *
  */
-int td_put_stream(td_t* td, const tdt_t* key, int fd, unsigned flags);
+int td_put_stream
+  (td_t* td, const tdt_t* key, int fd, unsigned flags);
 
 /*
-* Variant of td_put(). Puts the same value into the btree under
-* multiple keys. The elipsis is a list of tdt_t pointers representing keys.
-*/
+ * Variant of td_put(). Puts the same value into the btree under
+ * multiple keys. The elipsis is a list of tdt_t pointers representing keys.
+ */
 int td_put_keys
   (td_t* td, const tdt_t* value, unsigned flags, unsigned nkeys, ...);
+
+/*
+ * Implements pushing of data.
+ * Efficient way to store data inside a btree, so that it acts as a
+ * list, the keys of which don't matter.
+ */
+int td_push
+  (td_t* td, const tdt_t* value);
 
 /*
  * Delete a value from the btree by providing a key.
@@ -168,7 +200,8 @@ int td_put_keys
  * \returns Zero on success (key is found), TDERR_NOTFOUND when the key
  * hasn't been found, or any other error.
  */
-int td_del(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
+int td_del
+  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
 
 /*
  * Pop a value from the btree.
@@ -181,7 +214,8 @@ int td_del(td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
  * \returns Zero on success (key is found), TDERR_NOTFOUND at EOF, or
  * any other error.
  */
-int td_pop(td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
+int td_pop
+  (td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
 
 typedef int(*rmwfnc_t)(td_t*,const tdt_t* key, tdt_t* value, void* arg);
 
@@ -220,52 +254,61 @@ int td_rmw
  * \param tdc Non-NULL pointer to uninitialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int tdc_init(td_t* td, tdc_t* tdc);
+int tdc_init
+  (td_t* td, tdc_t* tdc);
 
-int tdc_first(tdc_t* tdc);
+int tdc_first
+  (tdc_t* tdc);
 
 /*
  * Moves an initialized cursor to or near a key.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int tdc_mov(tdc_t* tdc, const tdt_t* key, unsigned flags);
+int tdc_mov
+  (tdc_t* tdc, const tdt_t* key, unsigned flags);
 
 /*
  * Moves the cursor to the next position.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int tdc_nxt(tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+int tdc_nxt
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
 
 /*
  * Moves the cursor to the previous position.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int tdc_prv(tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+int tdc_prv
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
 
 /*
  * Gets key and value at the current position of the cursor.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int tdc_get(tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+int tdc_get
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
 
-int tdc_get_stream(tdc_t* tdc, tdt_t* key, int fd, unsigned flags);
+int tdc_get_stream
+  (tdc_t* tdc, tdt_t* key, int fd, unsigned flags);
 
 /*
  * Replaces the value at the current position of the cursor.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int tdc_rpl(tdc_t* tdc, const tdt_t* value, unsigned flags);
+int tdc_rpl
+  (tdc_t* tdc, const tdt_t* value, unsigned flags);
 
 /*
  * Debugging.  Will push a description of the current structure to stderr.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
-int td_debug(td_t* td);
+int td_debug
+  (td_t* td);
 
 /**
  * Verifies the entire dbm. If it returns a fatal error, the dbm
@@ -310,17 +353,18 @@ int td_wipe
  * \def TDERR_NOMEM
  * is returned when obtaining memory failed.
  */
-#define TDERR_CHECKSUM 5
-#define TDERR_SPACE    4
-#define TDERR_DUP      3
-#define TDERR_INVAL    2
-#define TDERR_NOTFOUND 1
-#define TDERR_BOUNDS  -1
-#define TDERR_LOCK    -2
-#define TDERR_IO      -3
-#define TDERR_INIT    -4
-#define TDERR_NOMEM   -5
-#define TDERR_STRUCT  -6
+#define TDERR_CHECKSUM  5
+#define TDERR_SPACE     4
+#define TDERR_DUP       3
+#define TDERR_INVAL     2
+#define TDERR_NOTFOUND  1
+#define TDERR_BOUNDS   -1
+#define TDERR_LOCK     -2
+#define TDERR_IO       -3
+#define TDERR_INIT     -4
+#define TDERR_NOMEM    -5
+#define TDERR_STRUCT   -6
+#define TDERR_OVERFLOW -7
 
 #define TDERR_IS_FATAL(__r) ((__r)<0)
 

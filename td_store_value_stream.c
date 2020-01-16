@@ -29,7 +29,7 @@ int td_store_valuechunk
   (
     td_t* td,
     unsigned chunkoff,
-    uchar* data,
+    unsigned char* data,
     unsigned size,
     unsigned refcount,
     unsigned flags

@@ -17,7 +17,7 @@ static
 int td_debug_buffer
   (td_t* td, unsigned off, unsigned size)
 {
-  uchar buf[ size ];
+  unsigned char buf[ size ];
   unsigned i;
   CHECK(td_read(td, off, buf, size));
   for (i=0; i < size; i++) {

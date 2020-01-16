@@ -28,6 +28,7 @@ int td_unlink_value
   switch (chunkheader.refcount) {
   case 0:
     fprintf(stderr, "WARNING: Dangling value node found at %u\n", valueptr);
+    __attribute__ ((fallthrough));
   case 1:
     CHECK(td_yield_all(td, valueptr));
     break;

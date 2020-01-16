@@ -62,6 +62,7 @@ int td_iterate_to_key
           }
           break;
         }
+        __attribute__ ((fallthrough));
       case TDERR_NOTFOUND:
         *path = orig_path;
         return 0;

@@ -44,6 +44,7 @@ int td_rmw_locked
               &(path.head->keyhead)
             )
           );
+          __attribute__ ((fallthrough));
         case TDERR_NOTFOUND:
           return 0;
         default:

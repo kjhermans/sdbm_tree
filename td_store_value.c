@@ -16,7 +16,7 @@ int td_store_valuechunk
     td_t* td,
     unsigned chunkoff,
     unsigned next,
-    uchar* data,
+    unsigned char* data,
     unsigned size,
     unsigned refcount,
     unsigned flags

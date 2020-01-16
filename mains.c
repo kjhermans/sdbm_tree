@@ -12,7 +12,7 @@ extern "C" {
 
 #include "td_private.h"
 
-//#define uchar unsigned char
+//#define unsigned char unsigned char
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -186,7 +186,7 @@ int main
         if (isprint(c)) {
           fprintf(stdout, "%c", c);
         } else {
-          fprintf(stdout, "\\0%.3o", (uchar)c);
+          fprintf(stdout, "\\0%.3o", (unsigned char)c);
         }
       }
       fprintf(stdout, "\"\n----\n");

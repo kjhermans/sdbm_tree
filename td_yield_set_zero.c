@@ -23,7 +23,7 @@ extern "C" {
 int td_yield_set_zero
   (td_t* td, unsigned off)
 {
-  uchar zerobuf[ 256 ];
+  unsigned char zerobuf[ 256 ];
   unsigned size;
   memset(zerobuf, 0, sizeof(zerobuf));
   CHECK(td_read_uint(td, off + sizeof(unsigned), &size));

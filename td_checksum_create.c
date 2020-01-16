@@ -38,7 +38,7 @@ extern "C" {
 void td_checksum_create
   (void* mem, unsigned length, unsigned* checksum)
 {
-  uchar* _mem = (uchar*)mem;
+  unsigned char* _mem = (unsigned char*)mem;
   unsigned i;
   u_int64_t workingmem = FNV_OFFSET_BASIS;
 

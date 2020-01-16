@@ -26,7 +26,7 @@ extern "C" {
 int td_iterate_compare
   (td_t* td, struct stackelt* elt, const tdt_t* key, int partial)
 {
-  uchar keydata[ elt->keyhead.size - sizeof(struct keyhead) ];
+  unsigned char keydata[ elt->keyhead.size - sizeof(struct keyhead) ];
   tdt_t cmpkey = { keydata, sizeof(keydata) };
   CHECK(td_read_keydata(td, elt->ptr, &(elt->keyhead), &cmpkey, 0));
   elt->cmp = td->compare(td, key, &cmpkey, partial, td->cmparg);

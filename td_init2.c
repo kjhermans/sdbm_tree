@@ -79,6 +79,7 @@ int td_init2
   (td_t* td, const char* ident, unsigned align, unsigned flags)
 {
   struct td_header header;
+
   if (td->read(td, 0, (char*)(&header), sizeof(struct td_header), td->ioarg)
       || memcmp(header.magic, ident, 4))
   {

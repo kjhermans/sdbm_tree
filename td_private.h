@@ -17,7 +17,11 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
+#ifdef DISCARD_PARAMETER
+#undef DISCARD_PARAMETER
+#endif
 #define DISCARD_PARAMETER(p) (void)p
 
 #define TD_OFF_MAX (unsigned)(~0)
@@ -63,8 +67,6 @@ int td_init2(td_t* td, const char* ident, unsigned align, unsigned int flags);
 #endif
 #endif
 
-typedef unsigned char uchar;
-
 #ifndef TD_DISK_ALIGN
 //#define TD_DISK_ALIGN 512
 #define TD_DISK_ALIGN 1
@@ -84,9 +86,11 @@ static inline unsigned int td_align(unsigned int a, unsigned int n) {
 #define CHECKIO(fnc,usiz) { \
   off_t __n = (fnc); \
   if (__n < 0) { \
+    TDLOG("IO returns %ld; %s\n", __n, strerror(errno)); \
     return TDERR_IO; \
   } \
   if ((unsigned)__n != (usiz)) { \
+    TDLOG("IO returns %ld not %d; %s\n", __n, usiz, strerror(errno)); \
     return TDERR_IO; \
   } \
 }
