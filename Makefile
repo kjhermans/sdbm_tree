@@ -8,6 +8,9 @@ CFLAGS=-g -O2 -Wall -Wextra
 
 all: headers $(TARGET)
 
+debug:
+	make all CFLAGS='-g -O2 -Wall -Wextra -D_DEBUG'
+
 headers: td_functions.h
 
 td_functions.h: *.c

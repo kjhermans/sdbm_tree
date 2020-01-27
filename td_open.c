@@ -62,6 +62,9 @@ int td_open
     return r;
   }
   td->close = td_open_close;
+#ifdef _DEBUG
+  fprintf(stderr, "Btree database at '%s' opened successfully.\n", path);
+#endif
   return 0;
 }
 
