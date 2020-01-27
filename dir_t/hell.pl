@@ -218,7 +218,7 @@ int main(int argc, char* argv[]) {
           }
           fprintf(stderr, "ITR %s, expect %d instances\n", c->key, c->param);
           for (i=0; i < c->param; i++) {
-            uchar keymem[ 128 ], valmem[ 128 ];
+            unsigned char keymem[ 128 ], valmem[ 128 ];
             tdt_t key = { keymem, sizeof(keymem) };
             tdt_t val = { valmem, sizeof(valmem) };
 
