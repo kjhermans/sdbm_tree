@@ -13,6 +13,8 @@ extern "C" {
 /**
  * \ingroup btree
  *
+ * Associates an administrative database with this database.
+ * This allows you to use transactions, for example.
  */
 void td_assoc_admin
   (td_t* td, td_t* admin, unsigned assocflags)

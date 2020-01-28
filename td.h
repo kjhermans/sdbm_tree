@@ -120,6 +120,7 @@ void td_assoc_admin
 #define TD_ADMIN_CHANGE                 (1<<0)
 #define TD_ADMIN_ACCESS                 (1<<1)
 #define TD_ADMIN_CONTENT                (1<<2)
+#define TD_ADMIN_TXN                    (1<<3)
 
 /* 
  * Converts a char* string to a key.
