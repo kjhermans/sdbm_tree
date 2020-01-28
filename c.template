@@ -1,0 +1,30 @@
+/**
+ * Copyright 2020 K.J. Hermans (kees.jan.hermans@gmail.com)
+ * This code is part of simpledbm, an API to a dbm on a finite resource.
+ * License: BSD
+ *
+ * \brief BRIEF
+ */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "td_private.h"
+
+/**
+ * \ingroup GROUP
+ *
+ * \brief BRIEF
+ *
+ * EXPLANATION
+ *
+ * \param PARAMETER
+ *
+ * \returns VALUE, WHY
+ */
+FUNCTION
+
+#ifdef __cplusplus
+}
+#endif
