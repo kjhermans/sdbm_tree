@@ -54,7 +54,7 @@ archive: clean
 	@RELEASE=$$(cat release); \
 	DIR=`basename $$PWD`; \
 	/bin/echo "  [TAR] ~/btree-$$RELEASE.tar.gz"; \
-	cd .. && tar czf ~/btree-$$RELEASE.tar.gz $$DIR/
+	cd .. && tar czf ~/btree-$$RELEASE.tar.gz --exclude=\.git $$DIR/
 
 cmdline: all td_put td_dump td_debug td_ar td_arlist td_unar
 
