@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_yield}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_yield
+  (td_t* td, unsigned off);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Administrates space yielded to the empty list.
+ If the flag TDFLG\_WIPEDELETED has been set on initialization,
+ then the space of the chunk is set to all zero before being
+ added to the empty list.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param off Offset of the chunk to be yielded to the empty list.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

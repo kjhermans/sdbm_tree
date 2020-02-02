@@ -1,0 +1,29 @@
+
+\newpage
+\subsection{td\_init2}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_init2
+  (td_t* td, const char* ident, unsigned align, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup bree\_private
+
+ Back-end function of all td\_init\_* functions.
+ 
+ param td Non-NULL pointer to an initialized btree structure.
+ param ident Magic three-byte string dictating type of file ("tdi")
+ param align Make the btree always a multiple of this amount of bytes.
+ param flags Bits from the TDFLG\_* values.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

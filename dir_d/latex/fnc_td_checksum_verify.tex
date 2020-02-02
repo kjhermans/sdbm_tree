@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_checksum\_verify}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_checksum_verify
+  (void* mem, unsigned length, unsigned checksum);
+\end{verbatim}
+
+\subsubsection{Description}
+
+ 
+ ingroup btree\_private
+
+ Verifies a checksum of a piece of memory.
+
+ param[in] mem Non-NULL pointer to the beginning of the memory
+ to be checksummed.
+ param[in] length Size of the memory to be checksummed.
+ param[in] checksum The checksum to verify.
+
+ returns Zero when the piece of memory is verified by the checksum.
+ TDERR\_CHECKSUM on failure.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

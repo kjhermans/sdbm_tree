@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_iterate\_to\_key}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_iterate_to_key
+  (td_t* td, struct path* path, const tdt_t* key, int partial);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Recursive function.
+ Iterates to the point in the dbm at or nearest to before the sought key.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param path Search path built up to this point.
+ param key Non-NULL pointer to a potentially uninitialized tdt.
+ param partial Boolean. Whether or not matches are allowed to be partial.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

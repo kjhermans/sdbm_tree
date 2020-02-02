@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_iterate\_to\_max}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_iterate_to_max
+  (td_t* td, struct path* path);
+\end{verbatim}
+
+\subsubsection{Description}
+
+ 
+ ingroup btree\_private 
+
+ Recursive function.
+ Iterates to the biggest (right-most) key.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param path Search path built up to this point.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

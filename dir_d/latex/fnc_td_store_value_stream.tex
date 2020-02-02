@@ -1,0 +1,37 @@
+
+\newpage
+\subsection{td\_store\_value\_stream}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_store_value_stream
+  (
+    td_t* td,
+    int fd,
+    unsigned refcount,
+    unsigned* off,
+    unsigned flags
+  );
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Stores a new value in empty space(s). Returns its offset.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param[in] fd File descr from which chunks will be read until EOF, as value.
+ param[in] refcount Reference count for this value node (min. 1).
+ param[out] off On successful return, contains the offset within
+ the btree's resource, of the first chunk.
+ param[in] flags Bits from TDFLG\_* values.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

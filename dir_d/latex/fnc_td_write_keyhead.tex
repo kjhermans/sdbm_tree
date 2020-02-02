@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_write\_keyhead}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_write_keyhead
+  (td_t* td, unsigned off, const struct keyhead* keyhead);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Writes the header of a key to the btree's resource at a certain offset.
+
+ param td Non-NULL to an initialized pointer to a btree structure.
+ param[in] off Offset of the keyhead within the btree resource.
+ param[in] keyhead Non-NULL. The fully initialized key header to be written.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

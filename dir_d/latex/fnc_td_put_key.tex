@@ -1,0 +1,31 @@
+
+\newpage
+\subsection{td\_put\_key}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_put_key
+  (td_t* td, const tdt_t* key, const unsigned valueptr, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Puts a value in the db and its (single) key.
+ 
+ ---- Description ----
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param key Non-NULL pointer to an initialized tdt\_t structure.
+ param valueptr Offset to the value node already written
+ param flags Bits from the TDFLG\_* values.
+
+ returns Zero on success, or non-zero on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_extend}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_extend
+  (td_t* td, unsigned wanted);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup bree\_private
+
+ Extends the btree's resource by a certain amount to fit new data.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param wanted Amount of space wanted.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ Most notably, it may return TDERR\_SPACE, which is not necessarily
+ all that grave; the btree is otherwise intact, and API users may choose
+ to recover from it gracefully.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

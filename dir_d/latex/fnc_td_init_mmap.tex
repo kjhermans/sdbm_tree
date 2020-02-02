@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_init\_mmap}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_init_mmap
+  (td_t* td, unsigned flags, int fd, unsigned off, unsigned siz);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Initializes a btree to use a memory-mapped file as a resource.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param flags Bits from the TDFLG\_* values.
+ param fd Filedescriptor to be memory mapped
+ param off
+ param siz
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

@@ -1,0 +1,83 @@
+
+\newpage
+\subsection{tdc\_mov}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdc_mov
+  (tdc_t* tdc, const tdt_t* key, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Moves the cursor to a point at or near a given key.
+
+ There are two modes of calling this function:
+ - When a key is given, moves the cursor to the place AT, or JUST BEFORE the
+   key, depending on the bits set in the 'flags' parameter.  Also renews the
+   System Change Number cache in the cursor, renewing the cursor if it had
+   become stale.
+ - If a key isn't given, one the TDFLG\_BEGIN or TDFLG\_END bits must be
+   set inside 'flags' parameter.  The cursor will then be set at the
+   beginning or end of the btree, respectively.
+
+ param tdc Pointer to an initialized tdc\_t structure, potentially stale.
+ param key Pointer to an initialized dbt\_t structure, containing a key.
+ param flags Flags; OR-ed together TDFLG\_PARTIAL or TDFLG\_EXACT, or zero,
+ when a key is given, or one of TDFLG\_BEGIN or TDFLG\_END when it is not.
+
+ returns Zero on success, TDERR\_NOTFOUND if the key cannot be found exactly
+ and the TDFLG\_EXACT flag is set, or any of the errors of the underlying
+ functions.
+
+ Bear in mind that a partial key match is considered an
+ exact match when TDFLG\_PARTIAL has been set during initialization.
+ par Flags and matches:
+ Since the terminology of 'partial' and 'exact' matches may be confusing,
+ let's try to clear it up a bit more.
+
+ par
+ A partial match is a match using a search key that can be considered
+ to be a part of the tested key; under normal circumstances
+ (that is, without a customized 'compare' callback function) this means
+ that the search key, up to its own size, contains the same bytes as the
+ tested key (although the tested key may be longer).  A partial match is
+ then passed from the search algorithm to the function-specific algorithm
+ (get, put, delete, move etc.) as an exact match.  That function, in its
+ turn, decides on whether it needs an exact match or not, and proceeds to
+ run with it.  In the case of tdc\_mov(), this is left up to the caller.
+ The following paragraph provides a diagram of this behaviour.
+
+ par
+ Given the list [ 'aaa', 'bbb', 'ccc' ], and the search keys
+ 'bbb' (perfect match), 'bb' (partial match) and 'aab' (no match),
+ the cursor is moved to the following locations, given all TDFLG\_EXACT
+ and TDFLG\_PARTIAL flag combinations:
+ - Search 'bbb' with no flags; cursor at 'bbb'
+ - Search 'bbb' with TDFLG\_PARTIAL; cursor at 'bbb'
+ - Search 'bbb' with TDFLG\_PARTIAL|TDFLG\_EXACT; cursor at 'bbb'
+ - Search 'bbb' with TDFLG\_EXACT; cursor at 'bbb'
+ - Search 'bb' with no flags; cursor at 'aaa'
+ - Search 'bb' with TDFLG\_PARTIAL; cursor at 'bbb'
+ - Search 'bb' with TDFLG\_PARTIAL|TDFLG\_EXACT; cursor at 'bbb'
+ - Search 'bb' with TDFLG\_EXACT; returns TDERR\_NOTFOUND
+ - Search 'aab' with no flags; cursor at 'aaa'
+ - Search 'aab' with TDFLG\_PARTIAL; cursor at 'aaa'
+ - Search 'aab' with TDFLG\_PARTIAL|TDFLG\_EXACT; returns TDERR\_NOTFOUND
+ - Search 'aab' with TDFLG\_EXACT; returns TDERR\_NOTFOUND
+
+ par Using cursors in code:
+ Unless you have only specified the TDFLG\_EXACT flag (and not the
+ TDFLG\_PARTIAL flag, and verified the return value of this
+ function to be zero, of course), you should always check where you are
+ by using on of the key-filling cursor related functions, such as
+ tdc\_get(), tdc\_nxt() or tdc\_itr().
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

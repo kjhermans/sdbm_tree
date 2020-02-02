@@ -1,0 +1,27 @@
+
+\newpage
+\subsection{td\_defrag}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_defrag
+  (td_t* td);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Defragments the resource, both alignment of empty chunks and fragmented
+ values. This function is called on deletion of nodes.
+
+ param td Non-NULL pointer to an initialized btree structure.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{tdc\_prv}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdc_prv
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Retrieves the element at the cursor, and subsequently moves the cursor
+ to the previous element.
+
+ param tdc Non-NULL pointer to an initialized cursor structure.
+ param key Potentially NULL pointer to a potentially uninitialized tdt.
+ param value Potentially NULL pointer to a potentially uninitialized tdt.
+ param flags Bits from the TDCFLG\_* values.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

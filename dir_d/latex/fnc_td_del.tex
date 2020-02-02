@@ -1,0 +1,33 @@
+
+\newpage
+\subsection{td\_del}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_del
+  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Deletes an item from the tree, optionally filling in the data
+ contained therein.
+
+ param td Pointer to an initialized td\_t structure.
+ param key Non-NULL Pointer to an initialized tdt\_t structure,
+ containing the key.
+ param value Pointer to an initialized tdt\_t structure, which will be filled
+ with the removed value, or NULL if you're just interested in removal.
+ param flags May be specified to retrieve the deleted value.
+
+ returns Zero on success, TDERR\_NOTFOUND if the key cannot be found,
+ or any of the errors of the underlying functions.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

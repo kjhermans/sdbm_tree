@@ -1,0 +1,27 @@
+
+\newpage
+\subsection{td\_unlink\_value}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_unlink_value
+  (td_t* td, unsigned valueptr);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ Unlinks a value, decreasing the refcount on it, and removing if 0.
+
+ ---- Description ----
+
+ param td Non-NULL pointer to initialized td\_t structure.
+ param valueptr Pointer to the value node.
+
+ returns Zero on success, or non-zero on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

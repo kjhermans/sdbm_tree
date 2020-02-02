@@ -1,0 +1,42 @@
+
+\newpage
+\subsection{td\_put\_new}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_put_new
+  (
+    td_t*         td,
+    const tdt_t*  key,
+    unsigned      valueptr,
+    unsigned*     keyptr,
+    unsigned      previous,
+    unsigned      next,
+    unsigned      flags
+  );
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Puts a new node (with a new key) into the btree.
+
+ ---- Description ----
+
+ param td Non-NULL pointer to an initialized btree structre.
+ param key Non-NULL pointer to an initialized tdt\_t structure.
+ param valueptr Offset to the written value node.
+ param keyptr On successful return, the offset of the written key node.
+ param previous Offset to the previous node.
+ param next Offset to the next node.
+ param flags Bits from the TDFLG\_* values.
+
+ returns Zero on success, or any error of the underlying functions.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

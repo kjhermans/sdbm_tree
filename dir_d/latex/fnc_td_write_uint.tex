@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_write\_uint}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_write_uint
+  (td_t* td, unsigned off, unsigned value);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Writes a unsigned integer into the resource at a given position.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param off Offset of the integer to be written.
+ param value Value of the integer to be written.
+
+ returns Zero on success or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

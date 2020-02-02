@@ -1,0 +1,27 @@
+
+\newpage
+\subsection{td\_wipe}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_wipe
+  (td_t* td);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Wipes all data from a btree by creating one big single empty chunk
+ from all available space beyond the header.
+
+ param td Non-NULL pointer to initialized td\_t structure.
+
+ returns Zero on success, or non-zero on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

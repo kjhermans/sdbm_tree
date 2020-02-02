@@ -30,12 +30,54 @@ if (opendir(DIR, ".")) {
   closedir DIR;
 }
 
+my $indexstr = '';
+
 foreach my $cfile (sort @cfiles) {
   my $code = `cat $cfile.c`;
+  my $decl;
   if ($code =~ /((int|void)[ \t\r\n]+$cfile\r?\n[ \t]*\([^\)]*\))/s) {
-    print "extern\n$1;\n\n";
+    $decl = $1;
+    my $esc = $decl;
+#    $esc =~ s/_/\\_/g;
+#    $esc =~ s/\n/ /g;
+    my $esc2 = $cfile;
+    $esc2 =~ s/_/\\_/g;
+    print "extern\n$decl;\n\n";
+    my $comment;
+    if ($code =~ /\/\*\*(.*)\*\//s) {
+      $comment = $1;
+      $comment =~ s/^ ?\*//mg;
+      $comment =~ s/\\//g;
+      $comment =~ s/_/\\_/g;
+    }
+    if (! -f "dir_d/latex/$cfile.tex") {
+      if (open FILE, '>', "dir_d/latex/fnc_$cfile.tex") {
+        print FILE "
+\\newpage
+\\subsection{$esc2}
+\\subsubsection{Declaration} Function prototype:
+
+\\begin{verbatim}
+extern
+$esc;
+\\end{verbatim}
+
+\\subsubsection{Description}
+
+$comment
+
+\\subsubsection{Parameters}
+\\subsubsection{Returns}
+\\subsubsection{Called by}
+";
+        close FILE;
+      }
+    }
+    $indexstr .= "\\input{fnc_$cfile.tex}\n";
   }
 }
+
+open FILE, '>', 'dir_d/latex/fnc_index.tex'; print FILE $indexstr; close FILE;
 
 print "#ifdef __cplusplus
 }

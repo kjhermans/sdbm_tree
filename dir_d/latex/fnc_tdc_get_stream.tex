@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{tdc\_get\_stream}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdc_get_stream
+  (tdc_t* tdc, tdt_t* key, int fd, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Returns the element currently at the cursor.
+ Does exactly what tdc\_prv() and tdc\_nxt() do, minus the moving.
+
+ param tdc Non-NULL pointer to an initialized cursor structure.
+ param key Potentially NULL pointer to a potentially uninitialized tdt.
+ param fd File descriptor to write value to.
+ param flags Bits from the TDCFLG\_* values.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

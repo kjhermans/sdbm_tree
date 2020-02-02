@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_iterate\_to\_min}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_iterate_to_min
+  (td_t* td, struct path* path);
+\end{verbatim}
+
+\subsubsection{Description}
+
+ 
+ ingroup btree\_private 
+
+ Iterates to the smallest (left-most) key.
+ Recursive function.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param path Search path built up to this point.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

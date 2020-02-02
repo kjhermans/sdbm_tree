@@ -1,0 +1,29 @@
+
+\newpage
+\subsection{td\_read\_value}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_read_value
+  (td_t* td, unsigned ptr, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Reads a value off the btree's resource.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param[in] ptr Offset of the first chunk of the value to be read.
+ param[out] value On successful return, contains the value.
+ param[in] flags Bits from the TDFLG\_* values.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

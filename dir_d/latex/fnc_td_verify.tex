@@ -1,0 +1,29 @@
+
+\newpage
+\subsection{td\_verify}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_verify
+  (td_t* td, int fix);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Verifies the content of the btree resource.
+ Should this function return a fatal error, the btree should not be used.
+
+ param td The btree to be verified.
+ param fix Whether or not to fix minor errors.
+
+ par NB
+ The fix function is unimplemented.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

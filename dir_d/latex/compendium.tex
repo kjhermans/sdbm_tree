@@ -1,0 +1,94 @@
+\documentclass[11pt]{amsart}
+%\documentclass[11pt]{report}
+\usepackage[toc,page]{appendix}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{geometry}        % See geometry.pdf to learn the layout options.
+\geometry{a4paper}           % ... or a4paper or a5paper or ...
+%\geometry{landscape}        % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip} % Activate to begin paragraphs with empty line
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\graphicspath{ {images/} }
+
+\renewcommand{\familydefault}{\sfdefault}
+\newcounter{defctr}
+
+\title{SDBM\_Tree Balanced Tree Database System (Compendium)}
+\author{Kees-Jan Hermans}
+%\date{}                     % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+This document contains a description of sdbm\_tree, a C library that
+implements a balanced database tree with a focus on simplicity,
+integrity and openness.
+
+\vspace*{3\baselineskip}
+
+%Image
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm]{tree.png}
+\end{figure}
+
+\vfill
+
+\begin{table}[]
+\centering
+\begin{tabular}{ll}
+Accompanies release & \input{../../release} \\
+Author &  Kees-Jan Hermans / kees.jan.hermans@gmail.com \\
+Classification & - \\
+Generated on & \today \\
+\end{tabular}
+\end{table}
+
+% Accompanies release: \input{../../release}
+% 
+% Author: Kees-Jan Hermans / kees.jan.hermans@gmail.com
+% 
+% Classification: -
+% 
+% Generated on: \today
+\newpage
+\tableofcontents
+
+\setlength{\parindent}{4em}
+\setlength{\parskip}{1em}
+
+\newpage
+
+\input{intro.tex}
+
+%% all the rest of the content
+
+\newpage
+\section{Colofon}
+
+%\chapter
+%\addtocontents{lof}{\vspace*{-10pt}}
+%\addtocontents{lot}{\vspace*{-10pt}}
+
+%\setlength{\cftbeforesecskip}{0pt}
+%\setlength{\cftbeforeXskip}{0pt}
+\listoftables
+
+\newpage
+
+% \listoffigures
+
+\input{bib.tex}
+
+\newpage
+\begin{appendices}
+
+\section{Functions}
+\input{fnc_index.tex}
+
+\end{appendices}
+
+\end{document}

@@ -1,0 +1,43 @@
+
+\newpage
+\subsection{td\_rebalance}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_rebalance
+  (td_t* td);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ Just having this function means that we don't have to link with libmath.
+/
+static inline
+unsigned td\_log2
+  (unsigned n)
+{
+  unsigned r = 0;
+  while (n) {
+    n >>= 1;
+    ++r;
+  }
+  return r;
+}
+
+/**
+ ingroup btree\_private
+
+ Rebalances the tree a little bit:
+ For every imbalance, the top is shifted one in the right direction,
+ even when the imbalance is bigger.
+
+ param[in] td Non-NULL pointer to an initialized btree structure.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

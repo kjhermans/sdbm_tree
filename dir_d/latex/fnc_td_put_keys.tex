@@ -1,0 +1,34 @@
+
+\newpage
+\subsection{td\_put\_keys}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_put_keys
+  (td_t* td, const tdt_t* value, unsigned flags, unsigned nkeys, ...);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ Put a single value into the dbm under multiple keys.
+ 
+ --- Description ---
+
+ param td
+ param value
+ param flags
+ param nkeys The number of keys presented to the
+ param ... A list of tdt\_t pointers, provided by the caller,
+ as long as nkeys.
+
+ returns Zero on success, or non-zero on error.
+
+ NB If you specify TDFLG\_NODUPLKEYS, and only one of your keys
+ is duplicate, then the whole transaction will fail.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

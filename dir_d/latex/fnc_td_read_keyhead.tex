@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_read\_keyhead}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_read_keyhead
+  (td_t* td, unsigned off, struct keyhead* keyhead);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Reads a key header.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param[in] off Offset of the key header to be read.
+ param[out] keyhead On successful return, contains the key header.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

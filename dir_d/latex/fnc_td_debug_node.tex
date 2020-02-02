@@ -1,0 +1,29 @@
+
+\newpage
+\subsection{td\_debug\_node}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_debug_node
+  (td_t* td, unsigned node_offset, unsigned level);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Debugs the contents and children of a btree node to stderr.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param node\_offset Offset within the btree's resource, of the node
+ to be debugged.
+ param level Indentation level of the output.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

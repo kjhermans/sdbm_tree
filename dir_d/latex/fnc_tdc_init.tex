@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{tdc\_init}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdc_init
+  (td_t* td, tdc_t* tdc);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Initializes a cursor, moving it to the beginning of the tree.
+
+ param[in] td Non-NULL pointer to an initialized btree structure.
+ param[out] tdc Non-NULL pointer to a potentially uninitialized cursor
+ structure.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

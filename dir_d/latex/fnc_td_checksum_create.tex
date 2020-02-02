@@ -1,0 +1,39 @@
+
+\newpage
+\subsection{td\_checksum\_create}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+void td_checksum_create
+  (void* mem, unsigned length, unsigned* checksum);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Creates a checksum of a piece of memory.
+ Does this using the FNV-1a algorithm, which is 64-bit, and
+ must be reduced to sizeof(unsigned). So it is a variety of FNV.
+
+ code
+
+   hash = FNV\_offset\_basis
+   for each byte\_of\_data to be hashed
+        hash = hash XOR byte\_of\_data
+        hash = hash × FNV\_prime
+   return hash
+
+ endcode
+
+ param[in] mem Non-NULL pointer to the beginning of the memory
+ to be checksummed.
+ param[in] length Size of the memory to be checksummed.
+ param[out] checksum On return, contains the checksum of the memory piece.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

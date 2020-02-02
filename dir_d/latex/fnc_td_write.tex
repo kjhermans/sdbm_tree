@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_write}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_write
+  (td_t* td, unsigned off, const void* buf, unsigned size);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Write a piece of data into the btree resource at a given offset,
+ with a given size.
+
+ param td
+ param[in] off Offset within the resource to write to.
+ param[in] buf Non-NULL pointer. Buffer to write within the resource.
+ param[in] size Size of the buffer.
+
+ returns Zero on success, or any TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

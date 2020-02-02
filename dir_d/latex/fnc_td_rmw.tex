@@ -1,0 +1,52 @@
+
+\newpage
+\subsection{td\_rmw}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_rmw
+  (
+    td_t* td,
+    const tdt_t* key,
+    tdt_t* value,
+    unsigned flags,
+    rmwfnc_t callback,
+    void* arg
+  );
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Implements read-modify-write ('RMW') for this btree API.
+
+ The idea behind RMW is that both node-examination and -manipulation
+ can take place inside the same lock, allowing for certain data
+ transactions to happen.
+ The function caller provides a callback function as argument,
+ which gets called as soon as the btree is locked and the key is found.
+ Inside the * callback, the caller implements changes to the value tdt
+ and returns zero. The renewed value is then stored and the lock
+ is cleared.
+
+ param td Non-NULL pointer to initialized td\_t structure.
+ param key Non-NULL pointer to initialized tdt\_t structure.
+ param value Non-NULL pointer to initialized tdt\_t structure.
+ param flags Bits from TDFLG\_* values.
+ param callback The callback that examines the value, potentially
+ changes it, and returns zero to have it stored. Should any such function
+ return TDERR\_NOTFOUND, then the value is considered unchanged, and
+ zero is returned by the td\_rmw() function. Any other error is passed
+ along to the caller of td\_rmw().
+ param arg Any pointer, also NULL, that the caller wants passed to
+ the callback.
+
+ returns Zero on success, or non-zero on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

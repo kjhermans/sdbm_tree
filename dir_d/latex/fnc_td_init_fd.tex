@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_init\_fd}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_init_fd
+  (td_t* td, unsigned flags, int fd);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Initializes a btree to use a random-access file-descriptor as its resource.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param flags Bits from the TDFLG\_* values.
+ param fd A read/write random-access open filedescriptor.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

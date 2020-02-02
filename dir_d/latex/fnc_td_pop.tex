@@ -1,0 +1,31 @@
+
+\newpage
+\subsection{td\_pop}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_pop
+  (td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+ 
+ ingroup btree\_private 
+
+ Pops the left-most key/value pair out of the tree, and optionally
+ returns them.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param key pointer to a potentially uninitialized tdt.
+ param value pointer to a potentially uninitialized tdt.
+ param flags Bits from the TDFLG\_* values.
+
+ returns Zero on success, or a TDERR\_NOTFOUND when the database
+ is empty, or any other TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

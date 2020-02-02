@@ -1,0 +1,43 @@
+
+\newpage
+\subsection{td\_claim}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_claim
+  (td_t* td, int contiguous, unsigned* off, unsigned* size);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Claims an amount of resources.
+ While iterating through the linked list
+ of empty chunks, fills up a little table denoting the fittingness of
+ this chunk to be used.  Perfect fits are used immediately, while
+ not-so-perfect fits fill up the fitness table.  In the end, when either
+ the table is full or the end of the list has been reached, it makes a
+ choice for the nicest record of the table, and uses the data in this
+ record to make changes.
+
+ param td Non-NULL pointer to the initialized td\_t structure.
+ param contiguous Whether or not the value of *size must be met whole.
+ param off Returns the offset on success
+ param size Filled with requested size on calling, filled with granted
+ size on return.  NB. The requested size must be the full amount of space
+ requested, not diminished with chunk- or keyheader sizes.
+
+ returns Zero on success, TDERR\_SPACE when no piece can be found, or
+ any of the errors of the underlying functions.
+
+ par NB:
+ This function assumes that the header will be written again
+ when this function returns successfully.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

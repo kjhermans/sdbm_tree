@@ -1,0 +1,28 @@
+
+\newpage
+\subsection{td\_path\_next}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_path_next
+  (td_t* td, struct path* path);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Moves a path structure (used in normal searches and cursors)
+ to the next node.
+
+ param td Non-NULL pointer to initialized td\_t structure.
+ param path Non-NULL pointer to initialized struct path.
+
+ returns Zero on success, or non-zero on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

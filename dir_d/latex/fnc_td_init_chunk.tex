@@ -1,0 +1,30 @@
+
+\newpage
+\subsection{td\_init\_chunk}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_init_chunk
+  (td_t* td, unsigned flags, int fd, unsigned off, unsigned size);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Initializes a btree to use a part of a random-access file.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param flags Bits from the TDCFLG\_* values.
+ param fd Read/write, random-access, open file descriptor.
+ param off Offset within the file pointed to by fd.
+ param size Size to use within the file pointed to by fd.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

@@ -1,0 +1,36 @@
+
+\newpage
+\subsection{td\_put\_replace}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_put_replace
+  (
+    td_t*            td,
+    const unsigned   valueptr,
+    const unsigned   keyptr,
+    struct keyhead*  keyhead
+  );
+\end{verbatim}
+
+\subsubsection{Description}
+
+ 
+ ingroup btree\_private
+
+ Replaces a value of a key (not leading to a database scn change).
+ Removes the old chunks needed by value-storage, and claims new chunks.
+ This function is private, and assumes that the database is locked.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param valueptr Offset to the already written value node.
+ param keyptr Offset to the key node.
+ param keyhead Key header structure loaded at keyptr.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

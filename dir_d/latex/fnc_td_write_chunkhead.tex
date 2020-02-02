@@ -1,0 +1,29 @@
+
+\newpage
+\subsection{td\_write\_chunkhead}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_write_chunkhead
+  (td_t* td, unsigned off, const struct chunkhead* chunkhead);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Writes the head of a chunk. A chunk is a simple container of a part
+ of data.
+
+ param td
+ param[in] off Offset of the chunk
+ param[in] chunkhead Chunk header to be written.
+
+ returns Zero on success, or a fatal TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

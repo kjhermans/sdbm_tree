@@ -1,0 +1,37 @@
+
+\newpage
+\subsection{td\_compare}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_compare
+  (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ In-house comparison call-back function.
+
+ Compares to keys, potentially partially.
+ If not partially, compares like memcmp().
+ If partially, only until the length of key1.
+
+ param td Non-NULL pointer to an initialized btree structure. 
+ param key1 Non-NULL pointer to an initialized tdt.
+ param key2 Non-NULL pointer to an initialized tdt.
+ param partial Boolean. Whether or not partial matches are allowed.
+ param arg Callback API user-provided argument.
+ (Unused in this implementation).
+
+ returns Zero when (partially) equal, smaller than zero when key1 is
+ considered smaller than key2, greater than zero when key1 is considered
+ greater than key2.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

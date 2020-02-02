@@ -1,0 +1,35 @@
+
+\newpage
+\subsection{td\_put\_stream}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_put_stream
+  (td_t* td, const tdt_t* key, int fd, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Puts a value from a stream into the tree, under a certain key.
+
+ Values will be either newly inserted (when the key is not present),
+ replaced (when the key is present and TDFLG\_DUPLKEYS has not been set during
+ initialization), or added (when the key is present and TDFLG\_DUPLKEYS
+ has been set during initialization).
+
+ param td Pointer to an initialized td\_t structure.
+ param key Pointer to an initialized tdt\_t structure, containing the key.
+ param fd File descriptor from which chunks will be read until EOF as value.
+ param flags May be used to tweak the way the key/value pair is stored.
+
+ returns Zero on success, or any of the errors of the underlying
+ functions.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

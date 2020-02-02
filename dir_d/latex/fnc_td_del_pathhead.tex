@@ -1,0 +1,33 @@
+
+\newpage
+\subsection{td\_del\_pathhead}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_del_pathhead
+  (td_t* td, struct path* path, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Removes the node that is at the head of a given search path,
+ optionally filling provided key and value containers.
+ This is a private function that assumes the database has been locked.
+
+ param[in] td Pointer to an initialized td\_t structure.
+ param[in] path
+ param[out] value Pointer to an initialized tdt\_t structure,
+ which will be filled
+ with the removed value, or NULL if you're just interested in removal.
+ param[in] flags May be specified to retrieve the deleted value.
+
+ returns Zero on success, ...
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

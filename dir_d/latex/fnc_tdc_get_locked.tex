@@ -1,0 +1,29 @@
+
+\newpage
+\subsection{tdc\_get\_locked}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdc_get_locked
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Returns the element currently at the cursor from a locked btree resource.
+
+ param tdc Non-NULL pointer to an initialized cursor structure.
+ param key Non-NULL pointer to a potentially uninitialized tdt.
+ param value Potentially NULL pointer to a potentially uninitialized tdt.
+ param flags Bits from the TDCFLG\_* values.
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}
