@@ -26,8 +26,6 @@ extern "C" {
 
 #define TD_OFF_MAX (unsigned)(~0)
 
-typedef struct td_txn td_txn_t;
-
 int td_init2(td_t* td, const char* ident, unsigned align, unsigned int flags);
 
 #ifdef _DEBUG

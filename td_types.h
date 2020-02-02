@@ -152,11 +152,6 @@ struct td
       unsigned          offset;
     }                 resource;
 
-    struct {
-      td_t*             db;
-      unsigned          flags;
-    }                 admin;
-
   };
   
 /* Cursor */

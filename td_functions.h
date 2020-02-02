@@ -23,10 +23,6 @@ int td_ar_unpack
   (td_t* td);
 
 extern
-void td_assoc_admin
-  (td_t* td, td_t* admin, unsigned assocflags);
-
-extern
 void td_checksum_create
   (void* mem, unsigned length, unsigned* checksum);
 
@@ -305,10 +301,6 @@ int td_store_value_stream
     unsigned* off,
     unsigned flags
   );
-
-extern
-int td_txn_init
-  (td_t* td, td_txn_t* txn);
 
 extern
 int td_unlink_value
