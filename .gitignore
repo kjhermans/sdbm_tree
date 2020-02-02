@@ -25,3 +25,10 @@ td_arlist
 td_debug
 td_dump
 td_put
+
+dir_d/latex/compendium.aux
+dir_d/latex/compendium.log
+dir_d/latex/compendium.lot
+dir_d/latex/compendium.pdf
+dir_d/latex/compendium.toc
+
