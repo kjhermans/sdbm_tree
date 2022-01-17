@@ -262,6 +262,11 @@ int tdc_first
   (tdc_t* tdc);
 
 /*
+ * Macro to initialize a cursor.
+ */
+#define TDC_INIT(td) ({ tdc_t crs; tdc_init(td, &crs); crs; })
+
+/*
  * Moves an initialized cursor to or near a key.
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
