@@ -377,6 +377,14 @@ int td_wipe
 extern int td_compare
   (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
 
+typedef struct tdx
+{
+  td_t*             orig;
+  td_t              changes;
+  unsigned          id;
+}
+tdx_t;
+
 #ifdef __cplusplus
 }
 #endif

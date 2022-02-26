@@ -394,6 +394,18 @@ extern
 int tdc_rpl
   (tdc_t* tdc, const tdt_t* value, unsigned flags);
 
+extern
+int tdx_get
+  (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags);
+
+extern
+int tdx_init
+  (td_t* td, tdx_t* tdx);
+
+extern
+int tdx_put
+  (tdx_t* tdx, const tdt_t* key, const tdt_t* value, unsigned flags);
+
 #ifdef __cplusplus
 }
 #endif

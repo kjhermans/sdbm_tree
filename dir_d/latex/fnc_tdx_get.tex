@@ -1,0 +1,23 @@
+
+\newpage
+\subsection{tdx\_get}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdx_get
+  (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ Get a value in a transaction context.
+ This is done by making a local copy in the changes db, which will
+ make a subsequent get of the same key cheap. However, the first
+ get in a transaction context is not cheap.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}
