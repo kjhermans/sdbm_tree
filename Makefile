@@ -30,20 +30,6 @@ clean:
 	@cd dir_t && make clean
 	@cd dir_d && rm -rf html/
 
-crypto: crypto_objects crypto_lib
-
-CRYPTO_OBJECTS:=$(shell ls tdcrypt/*.c | sort | sed -e 's/\.c$$/.o/')
-
-crypto_objects: $(CRYPTO_OBJECTS)
-
-tdcrypt/tdcrypt.o: tdcrypt/tdcrypt.c
-	$(CC) $(CFLAGS) -I. -D_TD_CRYPT_ \
-	  -c tdcrypt/tdcrypt.c \
-	  -o tdcrypt/tdcrypt.o
-
-crypto_lib: all
-	ar rcs $(TARGET) $(CRYPTO_OBJECTS)
-
 test:
 	@cd dir_t && make
 
