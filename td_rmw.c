@@ -22,6 +22,7 @@ int td_rmw_locked
   )
 {
   struct path path;
+  unsigned valueptr;
 
   CHECK(td_read_header(td));
   if (td->header.top == 0) {
@@ -36,16 +37,18 @@ int td_rmw_locked
         int r;
         switch (r = callback(td, key, value, arg)) {
         case 0:
+          CHECK(td_store_value(td, value, 1, &valueptr, flags));
           CHECK(
             td_put_replace(
               td,
-              path.head->keyhead.value,
+              valueptr,
               path.head->ptr,
               &(path.head->keyhead)
             )
           );
           __attribute__ ((fallthrough));
         case TDERR_NOTFOUND:
+          CHECK(td_write_header(td));
           return 0;
         default:
           return r;
