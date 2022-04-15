@@ -8,6 +8,9 @@ CFLAGS=-g -O2 -Wall -Wextra
 
 all: headers $(TARGET)
 
+install: all
+	./install.sh
+
 debug:
 	make all CFLAGS='-g -O2 -Wall -Wextra -D_DEBUG'
 
