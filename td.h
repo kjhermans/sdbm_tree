@@ -146,6 +146,7 @@ tdt_t tdt_init
 
 /*
  * Get a value from the btree by providing a key.
+ *
  * \param td Non-NULL pointer to initialized btree structure.
  * \param key Non-NULL pointer to initialized tdt_t.
  * \param value Pointer to initialized tdt_t. May be NULL, in which case
@@ -159,6 +160,7 @@ int td_get
 
 /*
  * Put a value into the btree by providing a key and a value.
+ *
  * \param td Non-NULL pointer to initialized btree structure.
  * \param key Non-NULL pointer to initialized tdt_t.
  * \param value Non-NULL pointer to initialized tdt_t.
@@ -167,6 +169,25 @@ int td_get
  */
 int td_put
   (td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
+
+/*
+ * Variant of td_put which allows you to insert a value as a scattered array.
+ *
+ * \param td Non-NULL pointer to initialized btree structure.
+ * \param key Non-NULL pointer to initialized tdt_t.
+ * \param value Pointer to an array of value segments.
+ * \param valuecount Non zero number of elements in the value array.
+ * \param flags Bits from TDFLG_* flags.
+ * \return Zero on success, or any of the TDERR_* values on error.
+ */
+int td_put_vec
+  (
+    td_t* td,
+    const tdt_t* key,
+    const tdt_t* value,
+    unsigned valuecount,
+    unsigned flags
+  );
 
 /*
  * Variant of td_put(). Enters a value under a key into the dbm
@@ -376,14 +397,6 @@ int td_wipe
 
 extern int td_compare
   (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
-
-typedef struct tdx
-{
-  td_t*             orig;
-  td_t              changes;
-  unsigned          id;
-}
-tdx_t;
 
 #ifdef __cplusplus
 }

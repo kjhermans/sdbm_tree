@@ -164,7 +164,13 @@ int td_put_keys
 
 extern
 int td_put_locked_key
-  (td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
+  (
+    td_t* td,
+    const tdt_t* key,
+    const tdt_t* value,
+    unsigned valuecount,
+    unsigned flags
+  );
 
 extern
 int td_put_new
@@ -194,6 +200,16 @@ int td_put_stream
 extern
 int td_put_stream_locked_key
   (td_t* td, const tdt_t* key, int fd, unsigned flags);
+
+extern
+int td_put_vec
+  (
+    td_t* td,
+    const tdt_t* key,
+    const tdt_t* value,
+    unsigned valuecount,
+    unsigned flags
+  );
 
 extern
 void td_qsort
@@ -287,6 +303,7 @@ int td_store_value
   (
     td_t* td,
     const tdt_t* value,
+    unsigned valuecount,
     unsigned refcount,
     unsigned* off,
     unsigned flags
@@ -395,6 +412,14 @@ int tdc_rpl
   (tdc_t* tdc, const tdt_t* value, unsigned flags);
 
 extern
+int tdx_commit
+  (tdx_t* tdx);
+
+extern
+int tdx_del
+  (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags);
+
+extern
 int tdx_get
   (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags);
 
@@ -405,6 +430,10 @@ int tdx_init
 extern
 int tdx_put
   (tdx_t* tdx, const tdt_t* key, const tdt_t* value, unsigned flags);
+
+extern
+int tdx_rollback
+  (tdx_t* tdx);
 
 #ifdef __cplusplus
 }

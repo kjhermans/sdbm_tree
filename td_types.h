@@ -21,6 +21,8 @@ struct tdt
     unsigned          size;      /* Its size */
   };
 
+//---- below here are private types ----
+
 /**
  * A binary tree is theoretically capable of storing 2 ^ TD_MAXDEPTH - 1 nodes.
  */
@@ -32,12 +34,13 @@ struct keyhead
   {
     unsigned          value;     /* Pointer to value's first chunk */
     unsigned          size;      /* This chunk's size, including this header */
+    unsigned          scn;       /* System Change Number */
     unsigned          checksum;  /* Optional checksum of this chunk */
     unsigned          next;      /* Pointer to keyhead with higher keys */
     unsigned          previous;  /* Pointer to keyhead with lower keys */
   };
 
-#define TD_KEYHEAD_NULL (struct keyhead){ 0, 0, 0, 0, 0 }
+#define TD_KEYHEAD_NULL (struct keyhead){ 0, 0, (td->header.scn), 0, 0, 0 }
 
 struct stackelt
   {
@@ -63,14 +66,6 @@ struct path
 })
 
 #ifdef _TD_PRIVATE_
-
-//struct valuehead
-//  {
-//    unsigned          next;      /* Pointer to next chunk, or next key */
-//    unsigned          size;      /* This chunk's size, including header */
-//    unsigned          checksum;  /* Optional checksum of this chunk */
-//    unsigned          refcount;  /* Number of keys pointing here */
-//  };
 
 struct chunkhead
   {
@@ -161,6 +156,16 @@ struct tdc
     unsigned          scn;
     struct path       path;
   };
+
+/* Transaction */
+typedef struct tdx
+  {
+    td_t*             orig;
+    char              path[ 256 ];
+    td_t              changes;
+    unsigned          id;
+  }
+  tdx_t;
 
 #ifdef __cplusplus
 }

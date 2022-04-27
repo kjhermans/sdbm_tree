@@ -37,7 +37,7 @@ int td_rmw_locked
         int r;
         switch (r = callback(td, key, value, arg)) {
         case 0:
-          CHECK(td_store_value(td, value, 1, &valueptr, flags));
+          CHECK(td_store_value(td, value, 1, 1, &valueptr, flags));
           CHECK(
             td_put_replace(
               td,

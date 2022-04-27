@@ -35,7 +35,7 @@ int td_push_locked
   unsigned valueptr, keyptr;
 
   if (td->header.top == 0) {
-    CHECK(td_store_value(td, value, 1, &valueptr, 0));
+    CHECK(td_store_value(td, value, 1, 1, &valueptr, 0));
     CHECK(td_put_new(td, &key, valueptr, &keyptr, 0, 0, 0));
     td->header.top = keyptr;
   } else {
@@ -44,7 +44,7 @@ int td_push_locked
     CHECK(td_iterate_to_max(td, &path));
     CHECK(td_read_keydata(td, path.head->ptr, &(path.head->keyhead), &key, 0));
     CHECK(td_increase_key(&key));
-    CHECK(td_store_value(td, value, 1, &valueptr, 0));
+    CHECK(td_store_value(td, value, 1, 1, &valueptr, 0));
     CHECK(td_put_new(td, &key, valueptr, &keyptr, path.head->ptr, 0, 0));
   }
   CHECK(td_write_header(td));
@@ -58,7 +58,7 @@ int td_push_locked
  * Pushes a value into the db, creating a (time) ordered list.
  * It uses the underlying principles of a btree, but is still efficient:
  * the algorithm moves to the last item of the db, takes its key,
- * increases the value of it bitwise (so that, under a default
+ * increases the value of it bitwise (so that, under a default comparison
  * callback, it would be considered bigger), and stores the value there.
  * If the db is empty, will create a key consisting of a single byte
  * with value zero.

@@ -1,5 +1,7 @@
+#ifdef _TD_HAS_IOVEC_
+
 /*
-** Copyright 2015 K.J. Hermans (kees.jan.hermans@gmail.com)
+** Copyright 2022 K.J. Hermans (kees.jan.hermans@gmail.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
 ** License: BSD
 */
@@ -22,23 +24,34 @@ extern "C" {
  *
  * \param td Pointer to an initialized td_t structure.
  * \param key Pointer to an initialized tdt_t structure, containing the key.
- * \param value Pointer to an initialized tdt_t structure, containing the value.
+ * \param value Pointer to an array of value segments.
+ * \param valuecount Non zero number of elements in the value array.
  * \param flags May be used to tweak the way the key/value pair is stored.
  *
  * \returns Zero on success, or any of the errors of the underlying
  * functions.
  */
-int td_put
-  (td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags)
+int td_put_vec
+  (
+    td_t* td,
+    const tdt_t* key,
+    const tdt_t* value,
+    unsigned valuecount,
+    unsigned flags
+  )
 {
   int r;
   flags |= td->header.flags;
   CHECK(td_lock(td));
-  r = td_put_locked_key(td, key, value, 1, flags);
+  r = td_put_locked_key(td, key, value, valuecount, flags);
   CHECK(td_unlock(td));
   return r;
 }
 
+}
+
 #ifdef __cplusplus
 }
+#endif
+
 #endif

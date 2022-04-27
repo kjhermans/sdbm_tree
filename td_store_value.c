@@ -66,6 +66,7 @@ int td_store_value
   (
     td_t* td,
     const tdt_t* value,
+    unsigned valuecount,
     unsigned refcount,
     unsigned* off,
     unsigned flags
@@ -74,6 +75,9 @@ int td_store_value
   unsigned valuesize = value->size;
   unsigned lastchunkoff = 0;
 
+  if (valuecount == 0) {
+    return TDERR_INVAL;
+  }
   while (1) {
     unsigned chunkoff = 0;
     unsigned needed = valuesize + sizeof(struct chunkhead);
@@ -95,8 +99,10 @@ int td_store_value
     if (given < needed) {
       valuesize = (needed - given);
     } else if (given == needed) {
-      *off = chunkoff;
-      return 0;
+      if (--valuecount == 0) {
+        *off = chunkoff;
+        return 0;
+      }
     } else {
       return TDERR_STRUCT;
     }

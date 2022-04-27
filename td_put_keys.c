@@ -32,7 +32,7 @@ int td_put_keys_locked
   int r;
   unsigned valueoffset;
 
-  CHECK(td_store_value(td, value, nkeys, &valueoffset, flags));
+  CHECK(td_store_value(td, value, 1, nkeys, &valueoffset, flags));
   if ((r = td_put_keys_for_value(td, valueoffset, flags, nkeys, ap)) != 0) {
     CHECK(td_yield_all(td, valueoffset));
   }

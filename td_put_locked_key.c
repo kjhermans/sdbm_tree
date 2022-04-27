@@ -25,13 +25,19 @@ extern "C" {
  * \returns
  */
 int td_put_locked_key
-  (td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags)
+  (
+    td_t* td,
+    const tdt_t* key,
+    const tdt_t* value,
+    unsigned valuecount,
+    unsigned flags
+  )
 {
   int r;
   unsigned valueptr;
 
   CHECK(td_read_header(td));
-  CHECK(td_store_value(td, value, 1, &valueptr, flags));
+  CHECK(td_store_value(td, value, valuecount, 1, &valueptr, flags));
   if ((r = td_put_key(td, key, valueptr, flags)) != 0) {
     CHECK(td_yield_all(td, valueptr));
   }
