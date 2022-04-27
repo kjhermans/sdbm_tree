@@ -6,7 +6,13 @@
 \begin{verbatim}
 extern
 int td_put_locked_key
-  (td_t* td, const tdt_t* key, const tdt_t* value, unsigned flags);
+  (
+    td_t* td,
+    const tdt_t* key,
+    const tdt_t* value,
+    unsigned valuecount,
+    unsigned flags
+  );
 \end{verbatim}
 
 \subsubsection{Description}

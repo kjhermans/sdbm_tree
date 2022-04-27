@@ -17,7 +17,7 @@ int td_push
  Pushes a value into the db, creating a (time) ordered list.
  It uses the underlying principles of a btree, but is still efficient:
  the algorithm moves to the last item of the db, takes its key,
- increases the value of it bitwise (so that, under a default
+ increases the value of it bitwise (so that, under a default comparison
  callback, it would be considered bigger), and stores the value there.
  If the db is empty, will create a key consisting of a single byte
  with value zero.
