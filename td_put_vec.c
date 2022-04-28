@@ -1,5 +1,3 @@
-#ifdef _TD_HAS_IOVEC_
-
 /*
 ** Copyright 2022 K.J. Hermans (kees.jan.hermans@gmail.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
@@ -48,10 +46,6 @@ int td_put_vec
   return r;
 }
 
-}
-
 #ifdef __cplusplus
 }
-#endif
-
 #endif
