@@ -395,6 +395,12 @@ int td_wipe
 
 #define TDERR_IS_FATAL(__r) ((__r)<0)
 
+/*
+ * The default key comparison function, which compares keys as would
+ * memcmp(), with the addition that if they share the same bits across
+ * the shortest shared length, and key1 is longer than key2, the function
+ * will return -1, and that if key2 if longer, the function will return 1.
+ */
 extern int td_compare
   (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
 
