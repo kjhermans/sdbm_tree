@@ -10,41 +10,170 @@ extern "C" {
 
 #include "td_private.h"
 
+/**
+ * Stores an empty value, that is: the zero length string.
+ * This special case is optimized for because the claim() function
+ * isn't allowed to return a buffer less than the size of a header.
+ */
 static
-int td_store_valuechunk
+int td_store_empty_value
+  (td_t* td, unsigned refcount, unsigned* off, unsigned flags)
+{
+  unsigned chunkoff, given = sizeof(struct chunkhead);
+  struct chunkhead h = {
+    .next = 0,
+    .size = given,
+    .checksum = 0,
+    .refcount = refcount
+  };
+  (void)flags;
+
+  if (flags & TDFLG_CHECKSUM) {
+    td_checksum_create(0, 0, &(h.checksum));
+  }
+  CHECK(td_claim(td, 0, &chunkoff, &given));
+  if (given != sizeof(struct chunkhead)) {
+    return TDERR_STRUCT;
+  }
+  CHECK(td_write_chunkhead(td, chunkoff, &h));
+  ++(td->header.nchunks);
+  *off = chunkoff;
+  return 0;
+}
+
+struct tdvbuf
+{
+  tdt_t             value;
+  unsigned          used;
+};
+
+struct tdvvec
+{
+  struct tdvbuf*    list;
+  unsigned          offset;
+  unsigned          count;
+};
+
+/**
+ * Optimization: when the given space is smaller than or equal to
+ * the amount of data in my current value, then the current value
+ * will not require a copy to be used to store (part of its) data.
+ */
+static
+int td_store_chunk_nocopy
   (
-    td_t* td,
-    unsigned chunkoff,
-    unsigned next,
-    unsigned char* data,
-    unsigned size,
-    unsigned refcount,
-    unsigned flags
+    td_t*           td,
+    unsigned        chunkoff,
+    unsigned        chunkdatasize,
+    unsigned        nextchunk,
+    struct tdvvec*  vec,
+    unsigned        refcount,
+    unsigned        flags
   )
 {
-  struct chunkhead chunkhead = {
-    next,
-    size + sizeof(struct chunkhead),
-    0,
-    refcount
-  };
-  if (flags & TDFLG_CHECKSUM) {
-    td_checksum_create(
-      data,
-      size,
-      &(chunkhead.checksum)
+  struct tdvbuf* curval = &(vec->list[ vec->offset ]);
+
+  CHECK2(
+    td_store_valuechunk(
+      td,
+      chunkoff,
+      nextchunk,
+      curval->value.data + curval->value.size - (curval->used + chunkdatasize),
+      chunkdatasize,
+      refcount,
+      flags
+    ),
+    td_yield_all(td, chunkoff)
+  );
+  curval->used += chunkdatasize;
+  if (curval->used == curval->value.size && vec->offset) {
+    --(vec->offset);
+  }
+  return 0;
+}
+
+static
+int td_store_chunk_copy
+  (
+    td_t*           td,
+    unsigned        chunkoff,
+    unsigned        chunkdatasize,
+    unsigned        nextchunk,
+    struct tdvvec*  vec,
+    unsigned        refcount,
+    unsigned        flags
+  )
+{
+  struct tdvbuf* curval = &(vec->list[ vec->offset ]);
+  unsigned char chunk[ chunkdatasize ];
+
+  while (chunkdatasize >= curval->value.size - curval->used) {
+    chunkdatasize -= (curval->value.size - curval->used);
+    memcpy(
+      &(chunk[ chunkdatasize ]),
+      curval->value.data + curval->used,
+      curval->value.size - curval->used
+    );
+    curval->used = curval->value.size;
+    if (vec->offset == 0) {
+      if (chunkdatasize) {
+        return TDERR_STRUCT;
+      }
+      break;
+    }
+    --(vec->offset);
+    curval = &(vec->list[ vec->offset ]);
+  }
+  if (chunkdatasize) {
+    memcpy(
+      chunk,
+      curval->value.data + curval->value.size - chunkdatasize,
+      chunkdatasize
+    );
+    curval->used += chunkdatasize;
+  }
+  CHECK2(
+    td_store_valuechunk(
+      td,
+      chunkoff,
+      nextchunk,
+      chunk,
+      sizeof(chunk),
+      refcount,
+      flags
+    ),
+    td_yield_all(td, chunkoff)
+  );
+  return 0;
+}
+
+static
+int td_store_chunk
+  (
+    td_t*           td,
+    unsigned        chunkoff,
+    unsigned        chunkdatasize,
+    unsigned        nextchunk,
+    struct tdvvec*  vec,
+    unsigned        refcount,
+    unsigned        flags
+  )
+{
+  struct tdvbuf* curval = &(vec->list[ vec->offset ]);
+
+  if (chunkdatasize <= curval->value.size - curval->used) {
+    CHECK(
+      td_store_chunk_nocopy(
+        td, chunkoff, chunkdatasize, nextchunk, vec, refcount, flags
+      )
+    );
+  } else {
+    CHECK(
+      td_store_chunk_copy(
+        td, chunkoff, chunkdatasize, nextchunk, vec, refcount, flags
+      )
     );
   }
-  CHECK(td_write_chunkhead(td, chunkoff, &chunkhead));
-  CHECK(
-    td_write(
-      td,
-      chunkoff + sizeof(struct chunkhead),
-      data,
-      size
-    )
-  );
-  ++(td->header.nchunks);
   return 0;
 }
 
@@ -72,42 +201,50 @@ int td_store_value
     unsigned flags
   )
 {
-  unsigned valuesize = value->size;
-  unsigned lastchunkoff = 0;
+  unsigned needed = 0;
+  unsigned nextchunk = 0;
+  unsigned i;
+  struct tdvbuf buf[ valuecount ];
+  struct tdvvec vec = {
+    .list = buf,
+    .offset = valuecount - 1,
+    .count = valuecount
+  };
 
   if (valuecount == 0) {
     return TDERR_INVAL;
   }
-  while (1) {
-    unsigned chunkoff = 0;
-    unsigned needed = valuesize + sizeof(struct chunkhead);
-    unsigned given = needed;
-
+  for (i=0; i < valuecount; i++) {
+    needed += value[ i ].size;
+    buf[ i ].value = value[ i ];
+    buf[ i ].used = 0;
+  }
+  if (needed == 0) {
+    CHECK(td_store_empty_value(td, refcount, off, flags));
+    return 0;
+  }
+  while (needed) {
+    unsigned chunkoff, given = needed + sizeof(struct chunkhead), useful;
     CHECK(td_claim(td, 0, &chunkoff, &given));
-    CHECK2(
-      td_store_valuechunk(
-        td,
-        chunkoff,
-        lastchunkoff,
-        value->data + (needed - given),
-        given - sizeof(struct chunkhead),
-        refcount,
-        flags
-      ),
-      td_yield_all(td, chunkoff)
-    );
-    if (given < needed) {
-      valuesize = (needed - given);
-    } else if (given == needed) {
-      if (--valuecount == 0) {
-        *off = chunkoff;
-        return 0;
-      }
-    } else {
+    if (given < sizeof(struct chunkhead)) {
       return TDERR_STRUCT;
     }
-    lastchunkoff = chunkoff;
+    useful = given - sizeof(struct chunkhead);
+    CHECK(
+      td_store_chunk(
+        td,
+        chunkoff,
+        useful,
+        nextchunk,
+        &vec,
+        refcount,
+        flags
+      )
+    );
+    *off = nextchunk = chunkoff;
+    needed -= useful;
   }
+  return 0;
 }
 
 #ifdef __cplusplus

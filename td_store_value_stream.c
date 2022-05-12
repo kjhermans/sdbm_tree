@@ -24,43 +24,6 @@ int td_update_valuechunk
   return 0;
 }
 
-static
-int td_store_valuechunk
-  (
-    td_t* td,
-    unsigned chunkoff,
-    unsigned char* data,
-    unsigned size,
-    unsigned refcount,
-    unsigned flags
-  )
-{
-  struct chunkhead chunkhead = {
-    0, // next is unknown at this stage, it will be written during update
-    size + sizeof(struct chunkhead),
-    0, // checksum
-    refcount
-  };
-  if (flags & TDFLG_CHECKSUM) {
-    td_checksum_create(
-      data,
-      size,
-      &(chunkhead.checksum)
-    );
-  }
-  CHECK(td_write_chunkhead(td, chunkoff, &chunkhead));
-  CHECK(
-    td_write(
-      td,
-      chunkoff + sizeof(struct chunkhead),
-      data,
-      size
-    )
-  );
-  ++(td->header.nchunks);
-  return 0;
-}
-
 /**
  * \ingroup btree_private
  *
@@ -113,6 +76,7 @@ int td_store_value_stream
         td_store_valuechunk(
           td,
           chunkoff,
+          0,
           &(chunk[ o ]),
           given - sizeof(struct chunkhead),
           refcount,

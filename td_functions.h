@@ -320,6 +320,18 @@ int td_store_value_stream
   );
 
 extern
+int td_store_valuechunk
+  (
+    td_t* td,
+    unsigned chunkoff,
+    unsigned next,
+    unsigned char* data,
+    unsigned size,
+    unsigned refcount,
+    unsigned flags
+  );
+
+extern
 int td_unlink_value
   (td_t* td, unsigned valueptr);
 
