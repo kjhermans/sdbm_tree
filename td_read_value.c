@@ -47,10 +47,11 @@ int td_read_value
     }
     unsigned wantedsize = off + chunkdatasize;
     if (reallocating && wantedsize > value->size) {
-      void* mem = td->realloc(td, value->data, wantedsize, td->reallocarg);
+      char* mem = td->realloc(td, value->data, wantedsize + 1, td->reallocarg);
       if (mem) {
         value->data = mem;
         value->size = wantedsize;
+        mem[ wantedsize ] = 0;
       } else {
         RETURNERR(TDERR_NOMEM);
       }
