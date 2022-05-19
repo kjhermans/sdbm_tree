@@ -45,10 +45,11 @@ int td_read_keydata
   unsigned headsize = sizeof(struct keyhead);
   unsigned keysize = keyhead->size - headsize;
   if (reallocating) {
-    void* mem = td->realloc(td, key->data, keysize, td->reallocarg);
+    char* mem = td->realloc(td, key->data, keysize + 1, td->reallocarg);
     if (mem) {
       key->data = mem;
       key->size = keysize;
+      mem[ keysize ] = 0;
     } else {
       RETURNERR(TDERR_NOMEM);
     }
