@@ -52,6 +52,14 @@ void* td_malloc_realloc
   return realloc(ptr, size);
 }
 
+static
+void td_malloc_close
+  (td_t* td)
+{
+  free(td->resource.mem);
+  td->resource.mem = 0;
+}
+
 /**
  * \ingroup btree
  *
@@ -78,6 +86,7 @@ int td_init_malloc
   if (flags & TDFLG_ALLOCTDT) {
     td->realloc = td_malloc_realloc;
   }
+  td->close = td_malloc_close;
   CHECK(td_init2(td, "tdi", 1, flags));
   return 0;
 }
