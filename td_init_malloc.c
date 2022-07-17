@@ -56,6 +56,7 @@ static
 void td_malloc_close
   (td_t* td)
 {
+  memset(td->resource.mem, 0, sizeof(struct td_header));
   free(td->resource.mem);
   td->resource.mem = 0;
 }
