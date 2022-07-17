@@ -76,7 +76,7 @@ int td_init_malloc
 {
   CHECK(td_init(td));
   td->header.size = 4 * 1024;
-  if ((td->resource.mem = malloc(td->header.size)) == NULL) {
+  if ((td->resource.mem = calloc(1, td->header.size)) == NULL) {
     RETURNERR(TDERR_INIT);
   }
   td->read = td_malloc_read;
