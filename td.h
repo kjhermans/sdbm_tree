@@ -297,6 +297,15 @@ int tdc_mov
 
 /*
  * Moves the cursor to the next position.
+ *
+ * NOTE: A current limitation of this library is that the cursor will
+ * become invalid when doing mutations on the database while iterating
+ * using a cursor. This is because the cursor stores the path to the
+ * current node, and paths may change as a result of re-balancing of
+ * the tree when doing mutations. This means that tdc_nxt(), tdc_prv(),
+ * tdc_get() and tdc_rpl() may all return non-zero values for perhaps
+ * a non-obvious reason.
+ *
  * \param tdc Non-NULL pointer to an initialized cursor structure.
  * \return Zero on success, or any of the TDERR_* values on error.
  */

@@ -42,6 +42,15 @@ int tdc_nxt_locked
  *
  * \returns Zero on success, TDERR_NOTFOUND at the end of the btree,
  * or another TDERR_* value on error.
+ *
+ * NOTE: A current limitation of this library is that the cursor will
+ * become invalid when doing mutations on the database while iterating
+ * using a cursor. This is because the cursor stores the path to the
+ * current node, and paths may change as a result of re-balancing of
+ * the tree when doing mutations. This means that tdc_nxt(), tdc_prv(),
+ * tdc_get() and tdc_rpl() may all return non-zero values for perhaps
+ * a non-obvious reason.
+ *
  */
 int tdc_nxt
   (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags)
