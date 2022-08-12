@@ -384,6 +384,10 @@ int tdc_debug
   (tdc_t* cursor);
 
 extern
+int tdc_del
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+
+extern
 int tdc_first
   (tdc_t* tdc);
 
