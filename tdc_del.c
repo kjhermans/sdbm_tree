@@ -14,6 +14,9 @@ static
 int tdc_del_locked
   (tdc_t* tdc)
 {
+  if (tdc->path.size == 0) {
+    return TDERR_NOTFOUND;
+  }
   return td_del_pathhead(tdc->td, &(tdc->path), 0, 0);
 }
 
@@ -26,6 +29,10 @@ int tdc_del_locked
  * This function invalidates the cursor after successful execution,
  * because the structure of the tree cannot be relied on anymore.
  * (ie You can call this function once).
+ *
+ * \par NOTE
+ * If you call this function after a tdc_nxt(), as is common in loops,
+ * you may not remove the element that you think you're removing.
  *
  * \param tdc    Pointer to an initialized tdc_t structure.
  * \param key    Optional pointer to an initialized dbt_t structure.
