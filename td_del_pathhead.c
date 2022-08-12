@@ -37,7 +37,7 @@ int td_del_pathhead
   if (path->size > 1) {
     parent = path->head - 1;
   }
-  if (path->head->keyhead.previous !=0 && path->head->keyhead.next != 0) {
+  if (path->head->keyhead.previous != 0 && path->head->keyhead.next != 0) {
     struct path subpath = TD_PATH_INIT(path->head->keyhead.next);
     CHECK(td_iterate_to_min(td, &subpath));
     subpath.head->keyhead.previous = path->head->keyhead.previous;
