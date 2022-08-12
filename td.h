@@ -340,6 +340,17 @@ int tdc_rpl
   (tdc_t* tdc, const tdt_t* value, unsigned flags);
 
 /*
+ * Removes the object at the cursor.
+ *
+ * \par NOTE
+ * This function invalidates the cursor after successful execution,
+ * because the structure of the tree cannot be relied on anymore.
+ * (ie You can call this function once).
+ */
+int tdc_del
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+
+/*
  * Debugging.  Will push a description of the current structure to stderr.
  * \return Zero on success, or any of the TDERR_* values on error.
  */
