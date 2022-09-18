@@ -147,6 +147,10 @@ int td_pop
   (td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
 
 extern
+int td_profile
+  (td_t* td, char* path);
+
+extern
 int td_push
   (td_t* td, const tdt_t* value);
 
