@@ -128,7 +128,7 @@ void* td_prof_realloc
  * The file is written as soon as td->close() is called.
  */
 int td_profile
-  (td_t* td, char* path)
+  (td_t* td, unsigned flags, char* path)
 {
   struct td_profhelp h = {
     .lock       = td->lock,
