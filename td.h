@@ -424,6 +424,41 @@ int td_wipe
 extern int td_compare
   (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
 
+/** tdt_t utility functions **/
+
+extern tdt_t tdt_string
+  (tdt_t* tdt, char* string);
+
+/** tdt_t utility functions that require a malloc-ed or NULL
+    tdt_t data buffer **/
+
+extern void tdt_printf
+  (tdt_t* out, char* fmt, ...);
+
+extern void tdt_append
+  (tdt_t* out, void* mem, unsigned size);
+
+extern void tdt_appendchr
+  (tdt_t* out, unsigned char c);
+
+extern void tdt_appendstr
+  (tdt_t* out, char* str);
+
+extern void tdt_prepend
+  (tdt_t* out, void* mem, unsigned size);
+
+extern void tdt_insert
+  (tdt_t* out, int offset, void* mem, unsigned size);
+
+extern void tdt_reserve
+  (tdt_t* out, int offset, unsigned size);
+
+extern void tdt_copy
+  (tdt_t* out, tdt_t* in);
+
+extern void tdt_shift
+  (tdt_t* out, unsigned offset, unsigned whereto, int size);
+
 #ifdef __cplusplus
 }
 #endif
