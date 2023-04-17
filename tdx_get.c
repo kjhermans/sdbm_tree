@@ -20,18 +20,25 @@ int tdx_get
   (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags)
 {
   int r;
+  unsigned char* valuedata = value->data;
 
   switch (r = td_get(&(tdx->changes), key, value, flags)) {
   case 0:
-    return 0;
-  case TDERR_NOTFOUND:
-    switch (r = td_get(tdx->orig, key, value, flags)) {
-    case 0:
-      CHECK(td_put(&(tdx->changes), key, value, 0));
-      return 0;
-    default:
-      return r;
+    if (value->size == 0) {
+      return TDERR_STRUCT;
     }
+    switch (valuedata[ value->size-1 ]) {
+    case TDX_PUT:
+      value->size -= 1;
+      return 0;
+    case TDX_DEL:
+      return TDERR_NOTFOUND;
+    default:
+      return TDERR_STRUCT;
+    }
+  case TDERR_NOTFOUND:
+    CHECK(td_get(tdx->orig, key, value, flags));
+    return 0;
   default:
     return r;
   }

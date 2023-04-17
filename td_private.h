@@ -98,6 +98,9 @@ static inline unsigned int td_align(unsigned int a, unsigned int n) {
 
 #define MAX_DEFRAGLEVEL                 512
 
+#define TDX_PUT                         1
+#define TDX_DEL                         2
+
 #ifdef __cplusplus
 }
 #endif

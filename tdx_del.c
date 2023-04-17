@@ -11,12 +11,12 @@ extern "C" {
 #include "td_private.h"
 
 /**
- * Puts a name/value inside a transaction context into the db.
+ *
  */
-int tdx_put
-  (tdx_t* tdx, const tdt_t* key, const tdt_t* value, unsigned flags)
+int tdx_del
+  (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags)
 {
-  unsigned char type = TDX_PUT;
+  unsigned char type = TDX_DEL;
   tdt_t valuevec[] = {
     {
       value->data,
@@ -26,7 +26,7 @@ int tdx_put
       &type,
       1
     }
-  };
+  }; 
 
   CHECK(td_put_vec(&(tdx->changes), key, valuevec, 2, flags));
   return 0;

@@ -8,6 +8,11 @@
 extern "C" {
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 #include "td_private.h"
 
 static
@@ -23,6 +28,8 @@ int tdx_init
   memset(tdx, 0, sizeof(*tdx));
   tdx->orig = td;
   tdx->id = tdx_id++;
+  snprintf(tdx->path, sizeof(tdx->path), "/tmp/txn.%d.db", getpid());
+  CHECK(td_open(&(tdx->changes), tdx->path, 0, O_RDWR, 0640));
   return 0;
 }
 
