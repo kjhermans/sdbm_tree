@@ -27,7 +27,7 @@ int tdx_get
     if (value->size == 0) {
       return TDERR_STRUCT;
     }
-    switch (valuedata[ value->size-1 ]) {
+    switch (valuedata[ value->size - 1 ]) {
     case TDX_PUT:
       value->size -= 1;
       return 0;
