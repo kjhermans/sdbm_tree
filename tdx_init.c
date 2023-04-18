@@ -28,7 +28,9 @@ int tdx_init
   memset(tdx, 0, sizeof(*tdx));
   tdx->orig = td;
   tdx->id = tdx_id++;
-  snprintf(tdx->path, sizeof(tdx->path), "/tmp/txn.%d.db", getpid());
+  snprintf(tdx->path, sizeof(tdx->path),
+    "/tmp/txn.%d.%u.db", getpid(), tdx->id
+  );
   CHECK(td_open(&(tdx->changes), tdx->path, 0, O_RDWR, 0640));
   return 0;
 }
