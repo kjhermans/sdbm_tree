@@ -424,13 +424,16 @@ int td_wipe
 extern int td_compare
   (td_t* td, const tdt_t* key1, const tdt_t* key2, int partial, void* arg);
 
+
+
 /** tdt_t utility functions **/
 
 extern tdt_t tdt_string
   (tdt_t* tdt, char* string);
 
-/** tdt_t utility functions that require a malloc-ed or NULL
-    tdt_t data buffer **/
+
+
+/** tdt_t utility functions that require a malloc-ed or (tdt_t){ NULL,0 } **/
 
 extern void tdt_printf
   (tdt_t* out, char* fmt, ...);
