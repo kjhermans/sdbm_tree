@@ -37,8 +37,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <stdint.h>
 
-#include <naigama/util/td.h>
-
 void tdt_printf
   (tdt_t* out, char* fmt, ...)
 {
