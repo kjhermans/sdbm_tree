@@ -30,15 +30,15 @@ int tdx_commit
     if (tdc_nxt(&cursor, &key, &val, TDFLG_ALLOCTDT) != 0) {
       break;
     }
-    if (value->size == 0) {
+    if (val.size == 0) {
       free(key.data);
-      free(val.data);
+//      free(val.data);
       return TDERR_STRUCT;
     }
     valuedata = val.data;
-    switch (valuedata[ value->size - 1 ]) {
+    switch (valuedata[ val.size - 1 ]) {
     case TDX_PUT:
-      val.size -= 1;
+      --(val.size);
       if ((r = td_put(tdx->orig, &key, &val, 0)) != 0) {
         free(key.data);
         free(val.data);

@@ -37,6 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <stdint.h>
 
+#include "td.h"
+
 void tdt_printf
   (tdt_t* out, char* fmt, ...)
 {
@@ -69,13 +71,13 @@ void tdt_append
 void tdt_appendchr
   (tdt_t* out, unsigned char c)
 {
-  td_append(out, &c, 1);
+  tdt_append(out, &c, 1);
 }
 
 void tdt_appendstr
   (tdt_t* out, char* str)
 {
-  td_append(out, str, strlen(str));
+  tdt_append(out, str, strlen(str));
 }
 
 void tdt_prepend
@@ -91,7 +93,7 @@ void tdt_insert
   (tdt_t* out, int offset, void* mem, unsigned size)
 {
   if (offset == -1) {
-    td_append(out, mem, size);
+    tdt_append(out, mem, size);
   } else {
     unsigned remainder;
     if (out->size) { offset %= out->size; }

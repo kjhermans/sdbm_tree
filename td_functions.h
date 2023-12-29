@@ -148,7 +148,7 @@ int td_pop
 
 extern
 int td_profile
-  (td_t* td, char* path);
+  (td_t* td, unsigned flags, char* path);
 
 extern
 int td_push
