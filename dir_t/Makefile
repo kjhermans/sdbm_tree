@@ -18,6 +18,7 @@ MAINS=\
   test16.o \
   test17.o \
   test18.o \
+  test19.o \
 
 TARGETS=\
   test1 \
@@ -36,6 +37,7 @@ TARGETS=\
   test16 \
   test17 \
   test18 \
+  test19 \
   hell
 
 
@@ -109,6 +111,9 @@ test17: test17.o
 
 test18: test18.o
 	@$(CC) $(CFLAGS) -o test18 test18.o $(OBJECTS) ../*.o -lm
+
+test19: test19.o
+	@$(CC) $(CFLAGS) -o test19 test19.o $(OBJECTS) ../*.o -lm
 
 hell:
 	@echo "Generating hell.c .."
