@@ -104,7 +104,7 @@ int td_prof_compare
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
   timeradd(&tvc, &tvd, &tvc);
-  dprintf(h->fd, "compare; %lu.%.6lu; %u; %u\n", tvd.tv_sec, tvd.tv_usec, key1->size, key2->size);
+  dprintf(h->fd, "compare; %lu.%.6lu; %u; %u; %d\n", tvd.tv_sec, tvd.tv_usec, key1->size, key2->size, e);
   return e;
 }
 
@@ -121,7 +121,7 @@ unsigned td_prof_extend
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
   timeradd(&tve, &tvd, &tve);
-  dprintf(h->fd, "extend; %lu.%.6lu; %u\n", tvd.tv_sec, tvd.tv_usec, delta);
+  dprintf(h->fd, "extend; %lu.%.6lu; %u; %u\n", tvd.tv_sec, tvd.tv_usec, delta, e);
   return e;
 }
 
