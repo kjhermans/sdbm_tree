@@ -38,7 +38,8 @@ TARGETS=\
   test17 \
   test18 \
   test19 \
-  hell
+  hell \
+  hell2
 
 
 CFLAGS=-I.. -g -O2 -Wall
@@ -120,3 +121,9 @@ hell:
 	@/usr/bin/perl hell.pl > hell.c
 	@echo "Compiling hell.c .."
 	@$(CC) $(CFLAGS) -o hell hell.c $(OBJECTS) ../libbtree.a -lm
+
+hell2:
+	@echo "Generating hell2.c .."
+	@/usr/bin/perl hell2.pl > hell2.c
+	@echo "Compiling hell2.c .."
+	@$(CC) $(CFLAGS) -o hell2 hell2.c $(OBJECTS) ../libbtree.a -lm
