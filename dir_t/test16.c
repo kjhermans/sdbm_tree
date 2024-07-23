@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  if (s.st_size > sizeof(struct td_header) + 44) {
+  if (s.st_size > sizeof(struct td_header) + 46) {
     fprintf(stderr, "File is larger than assumed after put.\n");
     return -1;
   }
