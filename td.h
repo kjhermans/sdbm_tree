@@ -491,6 +491,19 @@ tdp_t;
 /**
  * Starts profiling the (open) database.
  * Calling td_close on your database, will automatically stop profiling.
+ * The general code design pattern is as follows:
+ *
+
+    td_t td;
+    td_open(...);
+    //.. potentially do stuff with the database.
+    tdp_t tdp;
+    td_profile_start(&td, &tdp, "/tmp/myprofile.csv");
+    //.. do stuff with the database that you want to profile.
+    td_profile_stop(&td, &tdp);
+    //.. code goes on here at full speed. No more profiling going on.
+    //.. you can now read /tmp/myprofile.csv for examining your performance.
+
  *
  * \param td        The open database.
  * \param tdp       You need to provide a pointer to this structure.
