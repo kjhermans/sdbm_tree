@@ -14,6 +14,13 @@ extern "C" {
 
 #include "td_private.h"
 
+struct timeval tvr = { 0 },
+               tvw = { 0 },
+               tvl = { 0 },
+               tvc = { 0 },
+               tve = { 0 },
+               tva = { 0 };
+
 static
 int td_prof_lock
   (td_t* td, int how, void* arg)
@@ -22,12 +29,17 @@ int td_prof_lock
   struct timeval tv0, tv1, tvd;
   int e;
 
-  gettimeofday(&tv0, 0);
-  e = h->lock(td, how, h->lockarg);
-  gettimeofday(&tv1, 0);
-  timersub(&tv1, &tv0, &tvd);
-  dprintf(h->fd, "lock; %lu.%.6lu\n", tvd.tv_sec, tvd.tv_usec);
-  return e;
+  if (h->lock) {
+    gettimeofday(&tv0, 0);
+    e = h->lock(td, how, h->lockarg);
+    gettimeofday(&tv1, 0);
+    timersub(&tv1, &tv0, &tvd);
+    timeradd(&tvl, &tvd, &tvl);
+    dprintf(h->fd, "lock; %lu.%.6lu\n", tvd.tv_sec, tvd.tv_usec);
+    return e;
+  } else {
+    return 0;
+  }
 }
 
 static
@@ -42,7 +54,8 @@ int td_prof_read
   e = h->read(td, off, buf, siz, h->ioarg);
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
-  dprintf(h->fd, "read; %lu.%.6lu; %u @ %u\n", tvd.tv_sec, tvd.tv_usec, siz, off);
+  timeradd(&tvr, &tvd, &tvr);
+  dprintf(h->fd, "read; %lu.%.6lu; %u; %u\n", tvd.tv_sec, tvd.tv_usec, off, siz);
   return e;
 }
 
@@ -58,7 +71,8 @@ int td_prof_write
   e = h->write(td, off, buf, siz, h->ioarg);
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
-  dprintf(h->fd, "write; %lu.%.6lu; %u @ %u\n", tvd.tv_sec, tvd.tv_usec, siz, off);
+  timeradd(&tvw, &tvd, &tvw);
+  dprintf(h->fd, "write; %lu.%.6lu; %u; %u\n", tvd.tv_sec, tvd.tv_usec, off, siz);
   return e;
 }
 
@@ -89,7 +103,8 @@ int td_prof_compare
   e = h->compare(td, key1, key2, exact, h->cmparg);
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
-  dprintf(h->fd, "compare; %lu.%.6lu; k1 %u k2 %u\n", tvd.tv_sec, tvd.tv_usec, key1->size, key2->size);
+  timeradd(&tvc, &tvd, &tvc);
+  dprintf(h->fd, "compare; %lu.%.6lu; %u; %u\n", tvd.tv_sec, tvd.tv_usec, key1->size, key2->size);
   return e;
 }
 
@@ -105,7 +120,8 @@ unsigned td_prof_extend
   e = h->extend(td, delta, h->extendarg);
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
-  dprintf(h->fd, "extend; %lu.%.6lu; d %u\n", tvd.tv_sec, tvd.tv_usec, delta);
+  timeradd(&tve, &tvd, &tve);
+  dprintf(h->fd, "extend; %lu.%.6lu; %u\n", tvd.tv_sec, tvd.tv_usec, delta);
   return e;
 }
 
@@ -121,7 +137,8 @@ void* td_prof_realloc
   ptr = h->realloc(td, mem, siz, h->reallocarg);
   gettimeofday(&tv1, 0);
   timersub(&tv1, &tv0, &tvd);
-  dprintf(h->fd, "realloc; %lu.%.6lu; size %u\n", tvd.tv_sec, tvd.tv_usec, siz);
+  timeradd(&tva, &tvd, &tva);
+  dprintf(h->fd, "realloc; %lu.%.6lu; %u\n", tvd.tv_sec, tvd.tv_usec, siz);
   return ptr;
 }
 
@@ -150,7 +167,7 @@ int td_profile_start
   tdp->extendarg  = td->extendarg;
   tdp->realloc    = td->realloc;
   tdp->reallocarg = td->reallocarg;
-  tdp->fd         = open(path, O_WRONLY, 0644);
+  tdp->fd         = open(path, O_WRONLY|O_CREAT|O_TRUNC, 0644);
   if (tdp->fd == -1) {
     return TDERR_IO;
   }
@@ -174,6 +191,13 @@ int td_profile_start
 void td_profile_stop
   (td_t* td, tdp_t* tdp)
 {
+  dprintf(tdp->fd, "cumulative_read; %lu.%.6lu\n", tvr.tv_sec, tvr.tv_usec);
+  dprintf(tdp->fd, "cumulative_write; %lu.%.6lu\n", tvw.tv_sec, tvw.tv_usec);
+  dprintf(tdp->fd, "cumulative_lock; %lu.%.6lu\n", tvl.tv_sec, tvl.tv_usec);
+  dprintf(tdp->fd, "cumulative_compare; %lu.%.6lu\n", tvc.tv_sec, tvc.tv_usec);
+  dprintf(tdp->fd, "cumulative_extend; %lu.%.6lu\n", tve.tv_sec, tve.tv_usec);
+  dprintf(tdp->fd, "cumulative_realloc; %lu.%.6lu\n", tva.tv_sec, tva.tv_usec);
+
   close(tdp->fd);
   td->lock       = tdp->lock;
   td->lockarg    = tdp->lockarg;

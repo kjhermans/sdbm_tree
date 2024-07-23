@@ -502,6 +502,9 @@ int td_profile_start
 
 /**
  * Stops profiling.
+ * \param           The open database.
+ * \param           The tdp structure that you passed to the td_profile_start()
+ *                  function.
  */
 extern
 void td_profile_stop
