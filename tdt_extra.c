@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <stdint.h>
 
-#include "td.h"
+#include "td_private.h"
 
 void tdt_printf
   (tdt_t* out, char* fmt, ...)
