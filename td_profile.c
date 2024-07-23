@@ -8,101 +8,104 @@
 extern "C" {
 #endif
 
-#include "td_private.h"
+#include <sys/time.h>
+#include <unistd.h>
+#include <fcntl.h>
 
-struct td_profhelp
-{
-  int             (*lock)(td_t*,int,void*);
-  void*             lockarg;
-  int             (*read)(td_t*, unsigned, void*, unsigned, void*);
-  int             (*write)(td_t*, unsigned, const void*, unsigned, void*);
-  void            (*close)(td_t*);
-  void*             ioarg;
-  int             (*compare)(td_t*,const tdt_t*,const tdt_t*,int,void*);
-  void*             cmparg;
-  unsigned        (*extend)(td_t*,unsigned,void*);
-  void*             extendarg;
-  void*           (*realloc)(td_t*,void*,unsigned,void*);
-  void*             reallocarg;
-  td_t              profile;
-  unsigned          counter;
-};
+#include "td_private.h"
 
 static
 int td_prof_lock
   (td_t* td, int how, void* arg)
 {
-  struct td_profhelp* h = arg;
-  int e = h->lock(td, how, h->lockarg);
-  if (e) {
-    //.. admin
-    return e;
-  }
-  //.. admin
-  return 0;
+  tdp_t* h = arg;
+  struct timeval tv0, tv1, tvd;
+  int e;
+
+  gettimeofday(&tv0, 0);
+  e = h->lock(td, how, h->lockarg);
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "lock; %lu.%.6lu\n", tvd.tv_sec, tvd.tv_usec);
+  return e;
 }
 
 static
 int td_prof_read
   (td_t* td, unsigned off, void* buf, unsigned siz, void* arg)
 {
-  struct td_profhelp* h = arg;
-  int e = h->read(td, off, buf, siz, h->ioarg);
-  if (e) {
-    //.. admin
-    return e;
-  }
-  //.. admin
-  return 0;
+  tdp_t* h = arg;
+  struct timeval tv0, tv1, tvd;
+  int e;
+
+  gettimeofday(&tv0, 0);
+  e = h->read(td, off, buf, siz, h->ioarg);
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "read; %lu.%.6lu; %u @ %u\n", tvd.tv_sec, tvd.tv_usec, siz, off);
+  return e;
 }
 
 static
 int td_prof_write
   (td_t* td, unsigned off, const void* buf, unsigned siz, void* arg)
 {
-  struct td_profhelp* h = arg;
-  int e = h->write(td, off, buf, siz, h->ioarg);
-  if (e) {
-    //.. admin
-    return e;
-  }
-  //.. admin
-  return 0;
+  tdp_t* h = arg;
+  struct timeval tv0, tv1, tvd;
+  int e;
+
+  gettimeofday(&tv0, 0);
+  e = h->write(td, off, buf, siz, h->ioarg);
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "write; %lu.%.6lu; %u @ %u\n", tvd.tv_sec, tvd.tv_usec, siz, off);
+  return e;
 }
 
 static
 void td_prof_close
   (td_t* td)
 {
-  struct td_profhelp* h = td->ioarg;
+  tdp_t* h = td->ioarg;
+  struct timeval tv0, tv1, tvd;
 
+  gettimeofday(&tv0, 0);
   h->close(td);
-  //.. write to h->path
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "close; %lu.%.6lu\n", tvd.tv_sec, tvd.tv_usec);
+  close(h->fd);
 }
 
 static
 int td_prof_compare
   (td_t* td, const tdt_t* key1, const tdt_t* key2, int exact, void* arg)
 {
-  struct td_profhelp* h = arg;
-  int e = h->compare(td, key1, key2, exact, h->cmparg);
+  tdp_t* h = arg;
+  struct timeval tv0, tv1, tvd;
+  int e;
 
-  if (e) {
-    //.. admin
-    return e;
-  }
-  //.. admin
-  return 0;
+  gettimeofday(&tv0, 0);
+  e = h->compare(td, key1, key2, exact, h->cmparg);
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "compare; %lu.%.6lu; k1 %u k2 %u\n", tvd.tv_sec, tvd.tv_usec, key1->size, key2->size);
+  return e;
 }
 
 static
 unsigned td_prof_extend
   (td_t* td, unsigned delta, void* arg)
 {
-  struct td_profhelp* h = arg;
-  unsigned e = h->extend(td, delta, h->extendarg);
+  tdp_t* h = arg;
+  struct timeval tv0, tv1, tvd;
+  unsigned e;
 
-  //.. admin
+  gettimeofday(&tv0, 0);
+  e = h->extend(td, delta, h->extendarg);
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "extend; %lu.%.6lu; d %u\n", tvd.tv_sec, tvd.tv_usec, delta);
   return e;
 }
 
@@ -110,10 +113,15 @@ static
 void* td_prof_realloc
   (td_t* td, void* mem, unsigned siz, void* arg)
 {
-  struct td_profhelp* h = arg;
-  void* ptr = h->realloc(td, mem, siz, h->reallocarg);
+  tdp_t* h = arg;
+  struct timeval tv0, tv1, tvd;
+  void* ptr;
 
-  //.. admin
+  gettimeofday(&tv0, 0);
+  ptr = h->realloc(td, mem, siz, h->reallocarg);
+  gettimeofday(&tv1, 0);
+  timersub(&tv1, &tv0, &tvd);
+  dprintf(h->fd, "realloc; %lu.%.6lu; size %u\n", tvd.tv_sec, tvd.tv_usec, siz);
   return ptr;
 }
 
@@ -127,40 +135,58 @@ void* td_prof_realloc
  * Works by replacing (and re-using) the callbacks.
  * The file is written as soon as td->close() is called.
  */
-int td_profile
-  (td_t* td, unsigned flags, char* path)
+int td_profile_start
+  (td_t* td, tdp_t* tdp, char* path)
 {
-  struct td_profhelp h = {
-    .lock       = td->lock,
-    .lockarg    = td->lockarg,
-    .read       = td->read,
-    .write      = td->write,
-    .close      = td->close,
-    .ioarg      = td->ioarg,
-    .compare    = td->compare,
-    .cmparg     = td->cmparg,
-    .extend     = td->extend,
-    .extendarg  = td->extendarg,
-    .realloc    = td->realloc,
-    .reallocarg = td->reallocarg,
-    .counter    = 0
-  };
+  tdp->lock       = td->lock;
+  tdp->lockarg    = td->lockarg;
+  tdp->read       = td->read;
+  tdp->write      = td->write;
+  tdp->close      = td->close;
+  tdp->ioarg      = td->ioarg;
+  tdp->compare    = td->compare;
+  tdp->cmparg     = td->cmparg;
+  tdp->extend     = td->extend;
+  tdp->extendarg  = td->extendarg;
+  tdp->realloc    = td->realloc;
+  tdp->reallocarg = td->reallocarg;
+  tdp->fd         = open(path, O_WRONLY, 0644);
+  if (tdp->fd == -1) {
+    return TDERR_IO;
+  }
+
   td->lock       = td_prof_lock;
-  td->lockarg    = &h;
+  td->lockarg    = tdp;
   td->read       = td_prof_read;
   td->write      = td_prof_write;
   td->close      = td_prof_close;
-  td->ioarg      = &h;
+  td->ioarg      = tdp;
   td->compare    = td_prof_compare;
-  td->cmparg     = &h;
+  td->cmparg     = tdp;
   td->extend     = td_prof_extend;
-  td->extendarg  = &h;
+  td->extendarg  = tdp;
   td->realloc    = td_prof_realloc;
-  td->reallocarg = &h;
-  if (td_open(&(h.profile), path, 0, O_RDWR|O_CREAT|O_TRUNC, 0640)) {
-    return ~0;
-  }
+  td->reallocarg = tdp;
+
   return 0;
+}
+
+void td_profile_stop
+  (td_t* td, tdp_t* tdp)
+{
+  close(tdp->fd);
+  td->lock       = tdp->lock;
+  td->lockarg    = tdp->lockarg;
+  td->read       = tdp->read;
+  td->write      = tdp->write;
+  td->close      = tdp->close;
+  td->ioarg      = tdp->ioarg;
+  td->compare    = tdp->compare;
+  td->cmparg     = tdp->cmparg;
+  td->extend     = tdp->extend;
+  td->extendarg  = tdp->extendarg;
+  td->realloc    = tdp->realloc;
+  td->reallocarg = tdp->reallocarg;
 }
 
 #ifdef __cplusplus

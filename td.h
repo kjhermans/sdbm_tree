@@ -462,6 +462,53 @@ extern void tdt_copy
 extern void tdt_shift
   (tdt_t* out, unsigned offset, unsigned whereto, int size);
 
+
+
+
+/**
+ * Profiling
+ */
+
+typedef struct
+{
+  int             (*lock)(td_t*,int,void*);
+  void*             lockarg;
+  int             (*read)(td_t*, unsigned, void*, unsigned, void*);
+  int             (*write)(td_t*, unsigned, const void*, unsigned, void*);
+  void            (*close)(td_t*);
+  void*             ioarg;
+  int             (*compare)(td_t*,const tdt_t*,const tdt_t*,int,void*);
+  void*             cmparg;
+  unsigned        (*extend)(td_t*,unsigned,void*);
+  void*             extendarg;
+  void*           (*realloc)(td_t*,void*,unsigned,void*);
+  void*             reallocarg;
+  td_t              profile;
+  int               fd;
+}
+tdp_t;
+
+/**
+ * Starts profiling the (open) database.
+ * Calling td_close on your database, will automatically stop profiling.
+ *
+ * \param td        The open database.
+ * \param tdp       You need to provide a pointer to this structure.
+ * \param path      The profiling data will be written to this file.
+ */
+extern
+int td_profile_start
+  (td_t* td, tdp_t* tdp, char* path);
+
+/**
+ * Stops profiling.
+ */
+extern
+void td_profile_stop
+  (td_t* td, tdp_t* tdp);
+
+
+
 #ifdef __cplusplus
 }
 #endif
