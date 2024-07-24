@@ -1,0 +1,40 @@
+
+\newpage
+\subsection{td\_store\_valuechunk}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int td_store_valuechunk
+  (
+    td_t* td,
+    unsigned chunkoff,
+    unsigned next,
+    unsigned char* data,
+    unsigned size,
+    unsigned refcount,
+    unsigned flags
+  );
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree\_private
+
+ Stores a value chunk.
+
+ param td Non-NULL pointer to an initialized btree structure.
+ param[in] chunkoff  The offset at which the chunk is to be stored.
+ param[in] next      Offset of the next chunk header.
+ param[in] data      Chunk's data.
+ param[in] size      Chunk's data size.
+ param[in] refcount  Reference count of the chunk.
+ param[in] flags     Flags (may contain TDFLG\_CHECKSUM).
+
+ returns Zero on success, or a TDERR\_* value on error.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}

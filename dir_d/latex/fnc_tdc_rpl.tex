@@ -21,6 +21,15 @@ int tdc_rpl
  param flags Bits from TDFLG\_* and TDCFLG\_* values.
 
  returns Zero on success, or a TDERR\_* value on error.
+
+ NOTE: A current limitation of this library is that the cursor will
+ become invalid when doing mutations on the database while iterating
+ using a cursor. This is because the cursor stores the path to the
+ current node, and paths may change as a result of re-balancing of
+ the tree when doing mutations. This means that tdc\_nxt(), tdc\_prv(),
+ tdc\_get() and tdc\_rpl() may all return non-zero values for perhaps
+ a non-obvious reason.
+
  
 
 \subsubsection{Parameters}

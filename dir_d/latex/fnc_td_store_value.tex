@@ -19,6 +19,173 @@ int td_store_value
 \subsubsection{Description}
 
 
+ Stores an empty value, that is: the zero length string.
+ This special case is optimized for because the claim() function
+ isn't allowed to return a buffer less than the size of a header.
+/
+static
+int td\_store\_empty\_value
+  (td\_t* td, unsigned refcount, unsigned* off, unsigned flags)
+{
+  unsigned chunkoff, given = sizeof(struct chunkhead);
+  struct chunkhead h = {
+    .next = 0,
+    .size = given,
+    .checksum = 0,
+    .refcount = refcount
+  };
+  (void)flags;
+
+  if (flags & TDFLG\_CHECKSUM) {
+    td\_checksum\_create(0, 0, &(h.checksum));
+  }
+  CHECK(td\_claim(td, 0, &chunkoff, &given));
+  if (given != sizeof(struct chunkhead)) {
+    return TDERR\_STRUCT;
+  }
+  CHECK(td\_write\_chunkhead(td, chunkoff, &h));
+  ++(td->header.nchunks);
+  *off = chunkoff;
+  return 0;
+}
+
+struct tdvbuf
+{
+  tdt\_t             value;
+  unsigned          used;
+};
+
+struct tdvvec
+{
+  struct tdvbuf*    list;
+  unsigned          offset;
+  unsigned          count;
+};
+
+/**
+ Optimization: when the given space is smaller than or equal to
+ the amount of data in my current value, then the current value
+ will not require a copy to be used to store (part of its) data.
+/
+static
+int td\_store\_chunk\_nocopy
+  (
+    td\_t*           td,
+    unsigned        chunkoff,
+    unsigned        chunkdatasize,
+    unsigned        nextchunk,
+    struct tdvvec*  vec,
+    unsigned        refcount,
+    unsigned        flags
+  )
+{
+  struct tdvbuf* curval = &(vec->list[ vec->offset ]);
+
+  CHECK2(
+    td\_store\_valuechunk(
+      td,
+      chunkoff,
+      nextchunk,
+      curval->value.data + curval->value.size - (curval->used + chunkdatasize),
+      chunkdatasize,
+      refcount,
+      flags
+    ),
+    td\_yield\_all(td, chunkoff)
+  );
+  curval->used += chunkdatasize;
+  if (curval->used == curval->value.size && vec->offset) {
+    --(vec->offset);
+  }
+  return 0;
+}
+
+static
+int td\_store\_chunk\_copy
+  (
+    td\_t*           td,
+    unsigned        chunkoff,
+    unsigned        chunkdatasize,
+    unsigned        nextchunk,
+    struct tdvvec*  vec,
+    unsigned        refcount,
+    unsigned        flags
+  )
+{
+  struct tdvbuf* curval = &(vec->list[ vec->offset ]);
+  unsigned char chunk[ chunkdatasize ];
+
+  while (chunkdatasize >= curval->value.size - curval->used) {
+    chunkdatasize -= (curval->value.size - curval->used);
+    memcpy(
+      &(chunk[ chunkdatasize ]),
+      curval->value.data + curval->used,
+      curval->value.size - curval->used
+    );
+    curval->used = curval->value.size;
+    if (vec->offset == 0) {
+      if (chunkdatasize) {
+        return TDERR\_STRUCT;
+      }
+      break;
+    }
+    --(vec->offset);
+    curval = &(vec->list[ vec->offset ]);
+  }
+  if (chunkdatasize) {
+    memcpy(
+      chunk,
+      curval->value.data + curval->value.size - chunkdatasize,
+      chunkdatasize
+    );
+    curval->used += chunkdatasize;
+  }
+  CHECK2(
+    td\_store\_valuechunk(
+      td,
+      chunkoff,
+      nextchunk,
+      chunk,
+      sizeof(chunk),
+      refcount,
+      flags
+    ),
+    td\_yield\_all(td, chunkoff)
+  );
+  return 0;
+}
+
+static
+int td\_store\_chunk
+  (
+    td\_t*           td,
+    unsigned        chunkoff,
+    unsigned        chunkdatasize,
+    unsigned        nextchunk,
+    struct tdvvec*  vec,
+    unsigned        refcount,
+    unsigned        flags
+  )
+{
+  struct tdvbuf* curval = &(vec->list[ vec->offset ]);
+
+  if (chunkdatasize <= curval->value.size - curval->used) {
+    CHECK(
+      td\_store\_chunk\_nocopy(
+        td, chunkoff, chunkdatasize, nextchunk, vec, refcount, flags
+      )
+    );
+  } else {
+    CHECK(
+      td\_store\_chunk\_copy(
+        td, chunkoff, chunkdatasize, nextchunk, vec, refcount, flags
+      )
+    );
+  }
+  return 0;
+}
+
+/**
  ingroup btree\_private
 
  Stores a new value in empty space(s). Returns its offset.

@@ -1,0 +1,47 @@
+
+\newpage
+\subsection{tdc\_del}
+\subsubsection{Declaration} Function prototype:
+
+\begin{verbatim}
+extern
+int tdc_del
+  (tdc_t* tdc, tdt_t* key, tdt_t* value, unsigned flags);
+\end{verbatim}
+
+\subsubsection{Description}
+
+
+ ingroup btree
+
+ Removes the object at the cursor.
+
+ par NOTE
+ This function invalidates the cursor after successful execution,
+ because the structure of the tree cannot be relied on anymore.
+ (ie You can call this function once).
+
+ par NOTE
+ If you call this function after a tdc\_nxt(), as is common in loops,
+ you may not remove the element that you think you're removing.
+
+ param tdc    Pointer to an initialized tdc\_t structure.
+ param key    Optional pointer to an initialized dbt\_t structure.
+               When non-NULL, is used to return the key at the cursor.
+ param value  Optional pointer to an initialized dbt\_t structure.
+               When non-NULL, is used to return the value at the cursor.
+ param flags  Flags; these only pertain to the 'get' portion of this
+               function and are ignored otherwise.
+               if TDFLG\_ALLOCTDT is given, and the key or value
+               size is NULL, room in them will be allocated using the
+               allocator function.
+
+ returns Zero on success, TDERR\_NOTFOUND if the cursor is not positioned
+          somewhere viable, or TDERR\_INVAL when the System Change Number
+          has invalidated the cursor (cursor is stale).
+          Or any other errors of any underlying functions.
+ 
+
+\subsubsection{Parameters}
+\subsubsection{Returns}
+\subsubsection{Called by}
