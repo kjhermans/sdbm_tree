@@ -56,7 +56,7 @@ all: $(OBJECTS) $(MAINS) $(TARGETS)
 	done
 
 clean:
-	@rm -f log $(OBJECTS) $(MAINS) $(TARGETS) hell.c
+	@rm -f log $(OBJECTS) $(MAINS) $(TARGETS) hell.c hell2.c
 	@rm -rf hell.dSYM
 
 test1: test1.o
