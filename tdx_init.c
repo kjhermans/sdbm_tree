@@ -31,7 +31,7 @@ int tdx_init
   snprintf(tdx->path, sizeof(tdx->path),
     "/tmp/txn.%d.%u.db", getpid(), tdx->id
   );
-  CHECK(td_open(&(tdx->changes), tdx->path, 0, O_RDWR, 0640));
+  CHECK(td_open(&(tdx->changes), tdx->path, 0, O_RDWR|O_CREAT|O_TRUNC, 0640));
   return 0;
 }
 
