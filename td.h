@@ -259,16 +259,16 @@ int td_rmw
  */
 
 /**
- * \def TDCFLG_PARTIAL
+ * \def TDFLG_PARTIAL
  * Allow for partial matches, that is, when the key given is smaller than,
  * but up its size equal to the key found, it's considered a match.
- * \def TDCFLG_EXACT
+ * \def TDFLG_EXACT
  * Matches of the cursor movement must be exact, or fail with TDERR_NOTFOUND.
  * Mind that partial matches _are_ considered exact matches when
- * TDCFLG_PARTIAL has been set.
+ * TDFLG_PARTIAL has been set and the partial part matches exactly.
  */
-#define TDCFLG_PARTIAL  (1<<9)
-#define TDCFLG_EXACT    (1<<10)
+#define TDFLG_PARTIAL  (1<<9)
+#define TDFLG_EXACT    (1<<10)
 
 /*
  * Initializes a cursor.

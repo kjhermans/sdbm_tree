@@ -20,9 +20,9 @@ int td_get_locked
     return TDERR_NOTFOUND;
   }
   path = TD_PATH_INIT(td->header.top);
-  CHECK(td_iterate(td, &path, key, 0));
-  //if (!(flags & TDCFLG_EXACT) || path.head->cmp == 0) {
-  if (path.head->cmp == 0) {
+  CHECK(td_iterate(td, &path, key, flags & TDFLG_PARTIAL));
+  if (!(flags & TDFLG_EXACT) || path.head->cmp == 0) {
+//  if (path.head->cmp == 0) {
     if (value) {
       CHECK(td_read_value(td, path.head->keyhead.value, value, flags));
     }
@@ -40,6 +40,9 @@ int td_get_locked
  * \param key Non-NULL pointer to a potentially uninitialized tdt.
  * \param value Potentially NULL pointer to a potentially uninitialized tdt.
  * \param flags Bits from the TDCFLG_* values.
+ *
+ * Note that this function will behave like cursor wrt the TDFLG_EXACT
+ * and TDFLG_PARTIAL.
  *
  * \returns Zero on success, or a TDERR_* value on error.
  */

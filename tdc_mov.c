@@ -23,10 +23,10 @@ int tdc_mov_locked
   if (tdc->scn != td->header.scn) {
     RETURNERR(TDERR_INVAL);
   }
-  CHECK(td_iterate(td, &(tdc->path), key, (flags & TDCFLG_PARTIAL)));
+  CHECK(td_iterate(td, &(tdc->path), key, (flags & TDFLG_PARTIAL)));
   if (tdc->path.head->cmp == 0) {
     return 0;
-  } else if (flags & TDCFLG_EXACT) {
+  } else if (flags & TDFLG_EXACT) {
     tdc->path.size = 0;
     tdc->path.head = 0;
     return TDERR_NOTFOUND;
