@@ -6,7 +6,7 @@
 \begin{verbatim}
 extern
 int td_get
-  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
+  (td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
 \end{verbatim}
 
 \subsubsection{Description}
@@ -17,9 +17,37 @@ int td_get
  Gets a key/value pair from a btree.
 
  param td Non-NULL pointer to an initialized btree structure.
- param key Non-NULL pointer to a potentially uninitialized tdt.
+ param key Non-NULL pointer to an initialized tdt.
  param value Potentially NULL pointer to a potentially uninitialized tdt.
- param flags Bits from the TDCFLG\_* values.
+ param flags Bits from the TDFLG\_* values.
+
+ Note that this function will behave like cursor wrt the TDFLG\_EXACT
+ and TDFLG\_PARTIAL. That is to say:
+
+ - When TDFLG\_PARTIAL|TDFLG\_EXACT is specified, any match that is both
+   partial (ie matches where the search key is smaller than or equal to
+   the found key in length) and exact (ie it matches exactly for that
+   length) will return zero. If such a key does not exist, it will
+   return TDERR\_NOTFOUND.
+ - When only TDFLG\_PARTIAL is specified, any match that is at least
+   partial will return zero. If such a key does not exist, it will
+   return TDERR\_NOTFOUND.
+ - When only TDFLG\_EXACT is specified, the found key must match the search
+   key both in length and content, and any other situation will return
+   TDERR\_NOTFOUND.
+ - When none of TDFLG\_EXACT or TDFLG\_PARTIAL are given, the nearest match
+   will be returned. If the database is empty, TDERR\_NOTFOUND is returned.
+
+ Also note that, since this library will never overwrite
+ a given buffer's size, this poses a problem wrt partial fetches of keys:
+ you will not be able to specify that you want to search partially,
+ but retrieve wholly. To fix this, you must do the following:
+
+ - Specify both TDFLG\_ALLOCKEY with the flags bitmask.
+ - On successful return (and only then), the pointer in key->data will
+   be the result of a call to malloc(). Obviously, key->size will represent
+   the amount of malloced data.
+ - After use of key->data, don't forget to free() it.
 
  returns Zero on success, or a TDERR\_* value on error.
  
