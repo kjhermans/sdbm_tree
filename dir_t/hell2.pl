@@ -213,7 +213,7 @@ int main(int argc, char* argv[]) {
           tdc_t cursor;
 
           tdc_init(&td, &cursor);
-          r = tdc_mov(&cursor, &searchkey, TDCFLG_EXACT);
+          r = tdc_mov(&cursor, &searchkey, TDFLG_EXACT);
           if (r) {
             fprintf(stderr, "Cursor move to %s went wrong.\n", c->key);
             return ~0;

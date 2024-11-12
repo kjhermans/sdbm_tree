@@ -22,15 +22,15 @@ int main(int argc, char* argv[]) {
   CHECK(td_put(&td, &key2, &value2, 0));
   td_debug(&td);
   debug_mem(area, 512);
-  CHECK(td_get(&td, &key1, &rvalue, 0));
+  CHECK(td_get(&td, &key1, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   CHECK(td_del(&td, &key1, &rvalue, 0));
   td_debug(&td);
   debug_mem(area, 512);
-  if (td_get(&td, &key1, &rvalue, 0) != TDERR_NOTFOUND) {
+  if (td_get(&td, &key1, &rvalue, TDFLG_EXACT) != TDERR_NOTFOUND) {
     return ~0;
   }
-  CHECK(td_get(&td, &key2, &rvalue, 0));
+  CHECK(td_get(&td, &key2, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   return 0;
 }

@@ -31,20 +31,20 @@ int main(int argc, char* argv[]) {
   debug_mem(area, 512);
   td_debug(&td);
   fprintf(stderr, "Get 1\n");
-  CHECK(td_get(&td, &key1, &rvalue, 0));
+  CHECK(td_get(&td, &key1, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   fprintf(stderr, "Get 2\n");
-  CHECK(td_get(&td, &key2, &rvalue, 0));
+  CHECK(td_get(&td, &key2, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   fprintf(stderr, "Get 3\n");
-  CHECK(td_get(&td, &key3, &rvalue, 0));
+  CHECK(td_get(&td, &key3, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
 
   tdx_t tdx = { 0 };
   tdx_init(&td, &tdx);
 
   fprintf(stderr, "Get 4\n");
-  CHECK(td_get(&td, &key1, &rvalue, 0));
+  CHECK(td_get(&td, &key1, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   if (strcmp(rvalue.data, value1.data)) {
     fprintf(stderr, "Error 1\n");
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
   CHECK(tdx_put(&tdx, &key1, &value4, 0));
 
   fprintf(stderr, "Get 5\n");
-  CHECK(td_get(&td, &key1, &rvalue, 0));
+  CHECK(td_get(&td, &key1, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   if (strcmp(rvalue.data, value1.data)) {
     fprintf(stderr, "Error 2\n");
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
   }
 
   fprintf(stderr, "Get 6\n");
-  CHECK(tdx_get(&tdx, &key1, &rvalue, 0));
+  CHECK(tdx_get(&tdx, &key1, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   if (strcmp(rvalue.data, value4.data)) {
     fprintf(stderr, "Error 3\n");
@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
   CHECK(tdx_commit(&tdx));
 
   fprintf(stderr, "Get 7\n");
-  CHECK(td_get(&td, &key1, &rvalue, 0));
+  CHECK(td_get(&td, &key1, &rvalue, TDFLG_EXACT));
   fprintf(stderr, "Received '%-.*s'\n", rvalue.size, (char*)(rvalue.data));
   if (strcmp(rvalue.data, value4.data)) {
     fprintf(stderr, "Error 4\n");

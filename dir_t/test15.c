@@ -23,15 +23,15 @@ int main(int argc, char* argv[]) {
 //    { "xxx", 0, 0, "xxx" },
 //    { "xx", 0, 0, "xxx" },
 //    { "x", 0, 0, "xxx" },
-    { "xxx", TDCFLG_PARTIAL, 0, "xxx" },
-    { "xx", TDCFLG_PARTIAL, 0, "xxx" },
-    { "x", TDCFLG_PARTIAL, 0, "xpz" },
-    { "xxx", TDCFLG_EXACT, 0, "xxx" },
-    { "xx", TDCFLG_EXACT, 1, "xxx" },
-    { "x", TDCFLG_EXACT, 1, "xxx" },
-    { "xxx", TDCFLG_PARTIAL|TDCFLG_EXACT, 0, "xxx" },
-    { "xx", TDCFLG_PARTIAL|TDCFLG_EXACT, 0, "xxx" },
-    { "x", TDCFLG_PARTIAL|TDCFLG_EXACT, 0, "xpz" }
+    { "xxx", TDFLG_PARTIAL, 0, "xxx" },
+    { "xx", TDFLG_PARTIAL, 0, "xxx" },
+    { "x", TDFLG_PARTIAL, 0, "xpz" },
+    { "xxx", TDFLG_EXACT, 0, "xxx" },
+    { "xx", TDFLG_EXACT, 1, "xxx" },
+    { "x", TDFLG_EXACT, 1, "xxx" },
+    { "xxx", TDFLG_PARTIAL|TDFLG_EXACT, 0, "xxx" },
+    { "xx", TDFLG_PARTIAL|TDFLG_EXACT, 0, "xxx" },
+    { "x", TDFLG_PARTIAL|TDFLG_EXACT, 0, "xpz" }
   };
 
   unsigned ncases = 9;
@@ -68,8 +68,8 @@ int main(int argc, char* argv[]) {
     fprintf(stderr, "\n\n\n----\n"
       "CASE: movkey='%s', flags=%s|%s, outcome=%d, getkey='%s'\n",
       curcase->movkey,
-      ((curcase->flags & TDCFLG_PARTIAL)?"PARTIAL":""),
-      ((curcase->flags & TDCFLG_EXACT)?"EXACT":""),
+      ((curcase->flags & TDFLG_PARTIAL)?"PARTIAL":""),
+      ((curcase->flags & TDFLG_EXACT)?"EXACT":""),
       curcase->outcome,
       curcase->getkey
     );

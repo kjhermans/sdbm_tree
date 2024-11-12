@@ -441,7 +441,7 @@ int main(int argc, char* argv[]) {
     searchkey = (tdt_t){ keystring, strlen(keystring) };
     CHECK(tdc_init(&td, &cursor));
     fprintf(stderr, " SEEK '%s'\n", keystring);
-    CHECK(tdc_mov(&cursor, &searchkey, TDCFLG_EXACT));
+    CHECK(tdc_mov(&cursor, &searchkey, TDFLG_EXACT));
     while (1) {
       int r;
       char findbuf[ 32 ];

@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     tdc_init(&td, &tdc);
     tdt_t key = tdt_string(0, "v"), value;
     fprintf(stderr, "Moving\n");
-    if (tdc_mov(&tdc, &key, TDCFLG_PARTIAL)) {
+    if (tdc_mov(&tdc, &key, TDFLG_PARTIAL)) {
       fprintf(stderr, "Couldn't move cursor.\n");
       return ~0;
     }
