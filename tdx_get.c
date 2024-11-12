@@ -17,7 +17,7 @@ extern "C" {
  * get in a transaction context is not cheap.
  */
 int tdx_get
-  (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags)
+  (tdx_t* tdx, tdt_t* key, tdt_t* value, unsigned flags)
 {
   int r;
   unsigned char* valuedata = value->data;
