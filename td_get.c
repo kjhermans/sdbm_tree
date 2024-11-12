@@ -1,5 +1,5 @@
 /*
-** Copyright 2015 K.J. Hermans (kees.jan.hermans@gmail.com)
+** Copyright 2024 K.J. Hermans (kees.jan.hermans@gmail.com)
 ** This code is part of simpledbm, an API to a dbm on a finite resource.
 ** License: BSD
 */
