@@ -72,7 +72,7 @@ int td_extend
 
 extern
 int td_get
-  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
+  (td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
 
 extern
 int td_get_stream
@@ -108,7 +108,7 @@ int td_init_mmap
 
 extern
 int td_iterate
-  (td_t* td, struct path* path, const tdt_t* key, int partial);
+  (td_t* td, struct path* path, const tdt_t* key, unsigned flags);
 
 extern
 int td_iterate_compare
@@ -116,7 +116,7 @@ int td_iterate_compare
 
 extern
 int td_iterate_to_key
-  (td_t* td, struct path* path, const tdt_t* key, int partial);
+  (td_t* td, struct path* path, const tdt_t* key, unsigned flags);
 
 extern
 int td_iterate_to_max
@@ -437,7 +437,7 @@ int tdx_del
 
 extern
 int tdx_get
-  (tdx_t* tdx, const tdt_t* key, tdt_t* value, unsigned flags);
+  (tdx_t* tdx, tdt_t* key, tdt_t* value, unsigned flags);
 
 extern
 int tdx_init
