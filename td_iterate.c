@@ -23,9 +23,9 @@ extern "C" {
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_iterate
-  (td_t* td, struct path* path, const tdt_t* key, int partial)
+  (td_t* td, struct path* path, const tdt_t* key, unsigned flags)
 {
-  CHECK(td_iterate_to_key(td, path, key, partial));
+  CHECK(td_iterate_to_key(td, path, key, flags));
   if (path->size > td->maxdepth) {
     td->maxdepth = path->size;
   }

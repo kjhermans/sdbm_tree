@@ -24,11 +24,11 @@ extern "C" {
  * \returns Zero on success, or a TDERR_* value on error.
  */
 int td_iterate_to_key
-  (td_t* td, struct path* path, const tdt_t* key, int partial)
+  (td_t* td, struct path* path, const tdt_t* key, unsigned flags)
 {
   TD_PATH_VALID(path);
   CHECK(td_read_keyhead(td, path->head->ptr, &(path->head->keyhead)));
-  CHECK(td_iterate_compare(td, path->head, key, partial)); 
+  CHECK(td_iterate_compare(td, path->head, key, flags & TDFLG_PARTIAL)); 
   if (path->head->cmp < 0) {
     unsigned previous;
     if ((previous = path->head->keyhead.previous) != 0) {
@@ -36,7 +36,7 @@ int td_iterate_to_key
       ++(path->head);
       TD_PATH_VALID(path);
       path->head->ptr = previous;
-      CHECK(td_iterate_to_key(td, path, key, partial));
+      CHECK(td_iterate_to_key(td, path, key, flags));
     } 
   } else if (path->head->cmp > 0) {
     unsigned next;
@@ -45,9 +45,8 @@ int td_iterate_to_key
       ++(path->head);
       TD_PATH_VALID(path);
       path->head->ptr = next;
-      CHECK(td_iterate_to_key(td, path, key, partial));
+      CHECK(td_iterate_to_key(td, path, key, flags));
     } 
-//  } else if (partial) {
   } else {
     while (1) {
       int r;
@@ -55,7 +54,7 @@ int td_iterate_to_key
       switch (r = td_path_previous(td, path)) {
       case 0:
         if (path->head != NULL && path->size != 0) {
-          CHECK(td_iterate_compare(td, path->head, key, partial));
+          CHECK(td_iterate_compare(td, path->head, key, flags & TDFLG_PARTIAL));
           if (path->head->cmp != 0) {
             *path = orig_path;
             return 0;

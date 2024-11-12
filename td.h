@@ -156,7 +156,12 @@ tdt_t tdt_init
  * hasn't been found, or any other error.
  */
 int td_get
-  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags);
+  (td_t* td, tdt_t* key, tdt_t* value, unsigned flags);
+
+/*
+ * \def TDFLG_ALLOCKEY allocates the key on successful returning of td_get().
+ */
+#define TDFLG_ALLOCKEY (1<<11)
 
 /*
  * Put a value into the btree by providing a key and a value.
