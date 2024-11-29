@@ -26,6 +26,8 @@ int td_get_locked
       CHECK(td_read_value(td, path.head->keyhead.value, value, flags));
     }
     if (flags & TDFLG_ALLOCKEY) {
+      key->data = 0;
+      key->size = 0;
       CHECK(td_read_keydata(td, path.head->ptr, &(path.head->keyhead), key, 0));
     }
     return 0;

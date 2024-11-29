@@ -39,7 +39,7 @@ int td_read_keydata
   int reallocating = (
     key->data == 0 &&
     key->size == 0 &&
-    (flags & TDFLG_ALLOCTDT) &&
+    (flags & (TDFLG_ALLOCTDT|TDFLG_ALLOCKEY)) &&
     td->realloc != 0
   );
   unsigned headsize = sizeof(struct keyhead);
