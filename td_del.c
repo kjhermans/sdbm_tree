@@ -46,7 +46,7 @@ int td_del_locked
       }
     }
   } else {
-    CHECK(td_del_one(td, key, value, flags, 0));
+    CHECK(td_del_one(td, key, value, flags, ((flags & TDFLG_EXACT) ? 0 : 1)));
   }
   return 0;
 }
