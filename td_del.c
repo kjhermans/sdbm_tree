@@ -12,14 +12,14 @@ extern "C" {
 
 static
 int td_del_one
-  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags, int partial)
+  (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags)
 {
   CHECK(td_read_header(td));
   if (td->header.top == 0) {
     return TDERR_NOTFOUND;
   } else {
     struct path path = TD_PATH_INIT(td->header.top);
-    CHECK(td_iterate(td, &path, key, partial));
+    CHECK(td_iterate(td, &path, key, flags));
     if (path.head->cmp != 0) {
       return TDERR_NOTFOUND;
     } 
@@ -33,10 +33,10 @@ int td_del_locked
   (td_t* td, const tdt_t* key, tdt_t* value, unsigned flags)
 {
   if (flags & TDFLG_DELETEALL) {
-    CHECK(td_del_one(td, key, value, flags, 1));
+    CHECK(td_del_one(td, key, value, flags|TDFLG_PARTIAL));
     while (1) {
       int r;
-      switch (r = td_del_one(td, key, value, flags, 1)) {
+      switch (r = td_del_one(td, key, value, flags|TDFLG_PARTIAL)) {
       case 0: 
         continue;
       case TDERR_NOTFOUND:
@@ -46,7 +46,7 @@ int td_del_locked
       }
     }
   } else {
-    CHECK(td_del_one(td, key, value, flags, ((flags & TDFLG_EXACT) ? 0 : 1)));
+    CHECK(td_del_one(td, key, value, flags));
   }
   return 0;
 }
