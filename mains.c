@@ -134,12 +134,17 @@ int main
   char usage[] =
     "Usage: %s [options] file\n";
   int i=1;
+  int keysonly = 0;
+
   for (; i<argc; i++) {
     char* arg = argv[i];
     if (*arg == '-') {
       ++arg;
       while (*arg) {
         switch (*arg) {
+        case 'k':
+          keysonly = 1;
+          break;
         default:
           fprintf(stderr, usage, *argv);
           return ~0;
@@ -180,18 +185,22 @@ int main
           fprintf(stdout, "\\0%.3o", c);
         }
       }
-      fprintf(stdout, "\"\nValue \"");
-      for (i=0; i < val.size; i++) {
-        char c = *((char*)(val.data + i));
-        if (isprint(c)) {
-          fprintf(stdout, "%c", c);
-        } else {
-          fprintf(stdout, "\\0%.3o", (unsigned char)c);
+      if (keysonly) {
+        fprintf(stdout, "\"\n");
+      } else {
+        fprintf(stdout, "\"\nValue \"");
+        for (i=0; i < val.size; i++) {
+          char c = *((char*)(val.data + i));
+          if (isprint(c)) {
+            fprintf(stdout, "%c", c);
+          } else {
+            fprintf(stdout, "\\0%.3o", (unsigned char)c);
+          }
         }
+        fprintf(stdout, "\"\n----\n");
       }
-      fprintf(stdout, "\"\n----\n");
-      free(key.data);
       free(val.data);
+      free(key.data);
       key = (tdt_t){ 0, 0 };
       val = (tdt_t){ 0, 0 };
     }
